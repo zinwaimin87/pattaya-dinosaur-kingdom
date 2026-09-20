@@ -174,4 +174,5 @@ function importBackup(e){
 function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),1700)}
 $$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('.lang').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));apply('en',false);
 </script>
+<!-- PDK-SETTING-NAV-V3: Settings navigation is included in the production UI. -->
 </body></html>
