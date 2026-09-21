@@ -120,7 +120,7 @@
         <button type="button" class="staff-role" data-role="customer" onclick="selectStaffRole('customer')"><b>💬 Customer Service</b><span>Customer support & ticket view</span></button>
         <button type="button" class="staff-role" data-role="event" onclick="selectStaffRole('event')"><b>🦖 Event Staff</b><span>Event schedule & event work</span></button>
       </div>
-      <div class="staff-login-actions"><button class="btn" onclick="staffLogin()">🚀 Enter Staff Area</button></div>
+      <div class="staff-login-actions"><button class="btn" onclick="staffLogin()">🚀 Enter Staff Area</button><button class="btn secondary" onclick="closeStaffLogin();pdkFirebaseLogin()">👑 Owner Login</button></div>
       <div class="help" id="staffLoginHelp">Owner can turn access on/off and change permissions anytime.</div>
     </div>
   </div>
@@ -309,7 +309,7 @@ async function removeStaff(uid){if(!isOwnerUser()||!confirm('Remove this staff a
 async function staffSaveShared(){if(!staffProfile?.active||!window.pdkAuth.currentUser?.isAnonymous)return false;try{await setDoc(doc(window.pdkDb,'staffAccess','state'),{tickets:JSON.parse(localStorage.getItem('pdkTickets')||'[]').map(t=>({...t,image:''})),eventSchedule:JSON.parse(localStorage.getItem('pdkEventSchedule')||'{}'),updatedAt:new Date().toISOString()},{merge:true});return true}catch(e){showToast('Staff cloud save failed');return false}}
 async function ownerMirrorShared(){if(!isOwnerUser())return;try{await setDoc(doc(window.pdkDb,'staffAccess','state'),{tickets:JSON.parse(localStorage.getItem('pdkTickets')||'[]').map(t=>({...t,image:''})),eventSchedule:JSON.parse(localStorage.getItem('pdkEventSchedule')||'{}'),founderData:{},updatedAt:new Date().toISOString()},{merge:true})}catch(e){console.warn('owner mirror',e)}}
 window.pdkStaffAuthReady=async user=>{const s=JSON.parse(localStorage.getItem('pdkStaffSession')||'null');if(s?.uid===user.uid){const snap=await getDoc(doc(window.pdkDb,'staffAccess','users',user.uid));if(snap.exists()){staffProfile={id:user.uid,...snap.data()};await staffLoadSharedState();startStaffRealtime();renderStaffSession();applyStaffUI();return}}openStaffLogin()};
-window.pdkOwnerReady=()=>{startOwnerStaffRealtime();applyStaffUI();ownerMirrorShared()};
+window.pdkOwnerReady=()=>{startOwnerStaffRealtime();applyStaffUI();ownerMirrorShared()};\nsetTimeout(()=>{if(!isOwnerUser()&&!localStorage.getItem("pdkStaffSession"))openStaffLogin()},900);
 const originalPersist=window.persistTickets;window.persistTickets=function(){const ok=originalPersist.apply(this,arguments);if(staffProfile?.active&&!isOwnerUser())staffSaveShared();else if(isOwnerUser())ownerMirrorShared();return ok};
 const originalSaveEvent=window.saveEventSchedule;window.saveEventSchedule=function(){if(staffProfile&&!isOwnerUser()&&!staffCan('editEvents')){showToast('Owner has disabled Event editing');return}const r=originalSaveEvent.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
 const originalSaveTicket=window.saveTicket;window.saveTicket=function(){if(staffProfile&&!isOwnerUser()&&!staffCan('editTickets')){showToast('Owner has disabled Ticket editing');return}const r=originalSaveTicket.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
