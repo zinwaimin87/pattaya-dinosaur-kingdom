@@ -32,9 +32,14 @@
 .staff-title-row{display:flex;align-items:center;gap:12px}.staff-3d-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:29px;background:linear-gradient(145deg,#20d9ff,#8b5cff 48%,#ff42b5);box-shadow:inset 0 2px 5px rgba(255,255,255,.35),0 12px 28px rgba(32,217,255,.22);transform:perspective(100px) rotateX(7deg) rotateY(-8deg);animation:staffIcon 3.5s ease-in-out infinite}
 @keyframes staffIcon{50%{transform:perspective(100px) rotateX(-5deg) rotateY(9deg) translateY(-4px)}}
 .staff-list{display:grid;gap:10px;margin-top:12px}.staff-row{padding:14px;border-radius:17px;border:1px solid var(--line);background:rgba(2,16,28,.48);position:relative}.staff-row-head{display:flex;align-items:center;gap:10px}.staff-avatar{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(32,217,255,.2),rgba(255,66,181,.18));font-size:21px}.staff-meta{min-width:0;flex:1}.staff-meta strong,.staff-meta small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.staff-meta small{color:var(--muted);margin-top:3px}.staff-status{padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(255,159,47,.1);color:#ffd39a;border:1px solid rgba(255,159,47,.2)}.staff-status.on{background:rgba(183,243,61,.1);color:#ddff9d;border-color:rgba(183,243,61,.22)}.staff-perms{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.perm-chip{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:11px;background:rgba(255,255,255,.045);font-size:10px;color:#d8e8f2}.perm-chip input{accent-color:#20d9ff}.staff-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.staff-me{margin-top:12px;padding:12px;border-radius:14px;background:rgba(183,243,61,.07);border:1px solid rgba(183,243,61,.17);font-size:11px;color:#dcf8ba}
-.staff-login{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 20% 20%,rgba(32,217,255,.22),transparent 35%),radial-gradient(circle at 80% 80%,rgba(255,66,181,.20),transparent 38%),rgba(0,4,10,.82);backdrop-filter:blur(18px)}
-.staff-login.show{display:flex}.staff-login-card{width:min(520px,100%);padding:24px;border-radius:30px;border:1px solid rgba(255,255,255,.15);background:linear-gradient(145deg,rgba(11,45,67,.96),rgba(7,18,33,.98));box-shadow:0 30px 100px rgba(0,0,0,.6);position:relative;overflow:hidden}.staff-login-card:after{content:"🦖";position:absolute;right:-12px;bottom:-55px;font-size:150px;opacity:.07;transform:rotate(-12deg)}.staff-login-top{text-align:center;position:relative;z-index:1}.staff-login-logo{width:88px;height:88px;margin:0 auto 13px;border-radius:26px;display:grid;place-items:center;font-size:47px;background:linear-gradient(145deg,#20d9ff,#7a5cff 48%,#ff42b5);box-shadow:0 18px 45px rgba(32,217,255,.2),inset 0 2px 6px rgba(255,255,255,.35);animation:staffLogo 3s ease-in-out infinite}.staff-login-top h2{margin:0;font-size:25px}.staff-login-top p{margin:7px 0 18px;color:var(--muted);font-size:12px;line-height:1.55}.staff-login-form{position:relative;z-index:1;display:grid;gap:11px}.staff-login-form input,.staff-login-form select{width:100%;border:1px solid rgba(255,255,255,.13);background:rgba(2,14,27,.75);color:#fff;border-radius:15px;padding:14px;outline:none;font:600 13px inherit}.staff-login-form input:focus{border-color:#20d9ff;box-shadow:0 0 0 4px rgba(32,217,255,.08)}.staff-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.staff-role{border:1px solid var(--line);border-radius:15px;padding:12px;background:rgba(255,255,255,.045);cursor:pointer;color:#fff;text-align:left}.staff-role.selected{border-color:rgba(32,217,255,.55);background:linear-gradient(135deg,rgba(32,217,255,.16),rgba(255,66,181,.10));box-shadow:0 0 0 1px rgba(32,217,255,.08)}.staff-role b{display:block;font-size:12px}.staff-role span{display:block;color:var(--muted);font-size:10px;margin-top:4px;line-height:1.35}.staff-login-actions{display:flex;gap:8px;margin-top:4px}.staff-login-actions .btn{flex:1}.staff-session-bar{position:fixed;right:12px;top:12px;z-index:25;display:none;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;background:rgba(7,25,40,.9);border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 25px rgba(0,0,0,.25);font-size:10px}.staff-session-bar.show{display:flex}.staff-session-dot{width:8px;height:8px;border-radius:50%;background:#b7f33d;box-shadow:0 0 10px #b7f33d}.staff-session-bar button{border:0;background:transparent;color:#fff;cursor:pointer;font-size:13px}.staff-empty{padding:14px;border-radius:14px;border:1px dashed var(--line);color:var(--muted);font-size:11px;text-align:center}
-@media(max-width:560px){.staff-perms{grid-template-columns:1fr}.staff-role-grid{grid-template-columns:1fr}.staff-login-card{padding:20px;border-radius:25px}}
+.staff-login{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 18% 12%,rgba(32,217,255,.24),transparent 32%),radial-gradient(circle at 82% 88%,rgba(255,66,181,.24),transparent 36%),linear-gradient(135deg,#dfe7ef 0%,#c8d2dd 48%,#e9eef3 100%);backdrop-filter:blur(16px)}
+.staff-login.show{display:flex}.staff-login-card{width:min(520px,100%);padding:26px 22px 24px;border-radius:34px;border:1px solid rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(238,244,249,.97),rgba(205,215,225,.97));box-shadow:18px 18px 45px rgba(53,70,87,.30),-14px -14px 35px rgba(255,255,255,.82),inset 1px 1px 0 rgba(255,255,255,.9);position:relative;overflow:hidden}
+.staff-login-card:before{content:"";position:absolute;width:190px;height:190px;right:-75px;top:-75px;border-radius:50%;background:radial-gradient(circle,rgba(32,217,255,.25),transparent 70%);animation:staffFloat 5s ease-in-out infinite}.staff-login-card:after{content:"🦖";position:absolute;right:-20px;bottom:-55px;font-size:150px;opacity:.08;transform:rotate(-12deg)}
+.staff-login-top{text-align:center;position:relative;z-index:1}.staff-login-logo{width:92px;height:92px;margin:0 auto 13px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:linear-gradient(145deg,#edf3f8,#c8d2dc);color:#253447;box-shadow:14px 14px 28px rgba(76,93,110,.28),-12px -12px 24px rgba(255,255,255,.9),inset 1px 1px 3px rgba(255,255,255,.95);animation:staffLogo 3s ease-in-out infinite}.staff-login-top h2{margin:0;color:#263548;font-size:27px;letter-spacing:.16em;text-shadow:1px 1px 0 #fff,-1px -1px 0 rgba(99,116,134,.15)}.staff-login-top p{margin:8px 0 19px;color:#607286;font-size:12px;line-height:1.55}
+.staff-login-form{position:relative;z-index:1;display:grid;gap:12px}.staff-field-label{color:#44576a;font-size:11px;font-weight:900;letter-spacing:.08em;margin:0 4px -4px}.staff-login-form input{width:100%;border:0;background:linear-gradient(145deg,#d3dde6,#eef3f7);color:#263548;border-radius:18px;padding:15px 16px;outline:none;font:700 14px inherit;box-shadow:inset 5px 5px 10px rgba(91,108,125,.18),inset -5px -5px 10px rgba(255,255,255,.9),0 2px 3px rgba(255,255,255,.55)}.staff-login-form input::placeholder{color:#8493a3}.staff-login-form input:focus{box-shadow:inset 4px 4px 9px rgba(91,108,125,.16),inset -5px -5px 10px rgba(255,255,255,.9),0 0 0 3px rgba(32,217,255,.20)}
+.staff-role-title{color:#44576a;font-size:11px;font-weight:900;letter-spacing:.08em;margin:3px 4px -2px}.staff-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.staff-role{border:0;border-radius:18px;padding:13px;background:linear-gradient(145deg,#e9eff4,#cfd9e2);cursor:pointer;color:#33465a;text-align:left;box-shadow:6px 6px 12px rgba(81,98,115,.18),-6px -6px 12px rgba(255,255,255,.8);transition:.18s}.staff-role:active{transform:translateY(1px)}.staff-role.selected{color:#072235;background:linear-gradient(135deg,#8df0ff,#b8f5ff 45%,#ffb3df);box-shadow:inset 3px 3px 8px rgba(32,99,120,.14),inset -4px -4px 8px rgba(255,255,255,.55),0 0 0 2px rgba(32,217,255,.28),0 8px 18px rgba(32,217,255,.16)}.staff-role b{display:block;font-size:12px}.staff-role span{display:block;color:#6f8193;font-size:10px;margin-top:4px;line-height:1.35}.staff-role.selected span{color:#31576a}
+.staff-login-actions{display:grid;gap:9px;margin-top:5px}.staff-login-actions .btn{width:100%;border-radius:18px;padding:14px 16px;letter-spacing:.03em}.staff-signin-btn{background:linear-gradient(135deg,#20d9ff,#6e8cff 50%,#ff42b5)!important;color:#fff!important;box-shadow:8px 10px 24px rgba(76,91,150,.26),inset 0 1px 0 rgba(255,255,255,.45)!important}.staff-owner-btn{background:linear-gradient(145deg,#eaf0f5,#cbd5df)!important;color:#3d5165!important;box-shadow:6px 6px 13px rgba(81,98,115,.18),-6px -6px 12px rgba(255,255,255,.8)!important;border:0!important}.staff-login-status{min-height:18px;text-align:center;color:#52677a;font-size:11px;font-weight:700;line-height:1.45}.staff-session-bar{position:fixed;right:12px;top:12px;z-index:25;display:none;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;background:rgba(7,25,40,.9);border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 25px rgba(0,0,0,.25);font-size:10px}.staff-session-bar.show{display:flex}.staff-session-dot{width:8px;height:8px;border-radius:50%;background:#b7f33d;box-shadow:0 0 10px #b7f33d}.staff-session-bar button{border:0;background:transparent;color:#fff;cursor:pointer;font-size:13px}.staff-empty{padding:14px;border-radius:14px;border:1px dashed var(--line);color:var(--muted);font-size:11px;text-align:center}
+@media(max-width:560px){.staff-perms{grid-template-columns:1fr}.staff-role-grid{grid-template-columns:1fr}.staff-login-card{padding:22px 17px;border-radius:29px}.staff-login-top h2{font-size:23px}}
 </style></head>
 <body>
 <div class="app">
@@ -112,17 +117,26 @@
 </main>
 <div class="staff-login" id="staffLogin">
   <div class="staff-login-card">
-    <div class="staff-login-top"><div class="staff-login-logo">🦖</div><h2>Staff Access</h2><p>Enter your name and choose your work role. Owner controls your permissions.</p></div>
+    <div class="staff-login-top">
+      <div class="staff-login-logo">🦖</div>
+      <h2>SIGN IN</h2>
+      <p>Username ထည့်ပြီး သက်ဆိုင်ရာ Staff ကိုရွေးပါ။ Owner က ခွင့်ပြုထားမှ Staff Area ကို ဝင်နိုင်ပါမယ်။</p>
+    </div>
     <div class="staff-login-form">
-      <input id="staffNameInput" maxlength="50" placeholder="Staff name">
+      <label class="staff-field-label" for="staffNameInput">USERNAME</label>
+      <input id="staffNameInput" maxlength="50" autocomplete="username" placeholder="Enter your username">
+      <div class="staff-role-title">SELECT YOUR STAFF</div>
       <div class="staff-role-grid">
         <button type="button" class="staff-role selected" data-role="sale" onclick="selectStaffRole('sale')"><b>🎟️ Sale Staff</b><span>Ticket sales & quantity</span></button>
         <button type="button" class="staff-role" data-role="entry" onclick="selectStaffRole('entry')"><b>🚪 Entry Staff</b><span>Entry tickets & quantity</span></button>
         <button type="button" class="staff-role" data-role="customer" onclick="selectStaffRole('customer')"><b>💬 Customer Service</b><span>Customer support & ticket view</span></button>
         <button type="button" class="staff-role" data-role="event" onclick="selectStaffRole('event')"><b>🦖 Event Staff</b><span>Event schedule & event work</span></button>
       </div>
-      <div class="staff-login-actions"><button class="btn" onclick="staffLogin()">🚀 Enter Staff Area</button><button class="btn secondary" onclick="ownerLoginFromStaff()">👑 Owner Login</button></div>
-      <div class="help" id="staffLoginHelp">Owner can turn access on/off and change permissions anytime.</div>
+      <div class="staff-login-actions">
+        <button class="btn staff-signin-btn" onclick="staffLogin()">🔐 SIGN IN</button>
+        <button class="btn staff-owner-btn" onclick="ownerLoginFromStaff()">👑 Owner Login</button>
+      </div>
+      <div class="staff-login-status" id="staffLoginStatus">Owner can change your permissions anytime.</div>
     </div>
   </div>
 </div>
@@ -287,16 +301,48 @@ function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staff
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
 async function ownerLoginFromStaff(){try{if(window.pdkAuth?.currentUser?.isAnonymous&&window.pdkFirebaseFns?.signOut)await window.pdkFirebaseFns.signOut(window.pdkAuth)}catch(e){}closeStaffLogin();window.pdkFirebaseLogin?.()}
 async function staffLogin(){
- const name=el('staffNameInput')?.value.trim();if(!name){showToast('Staff name ထည့်ပါ');return}
- try{const user=await staffEnsureAuth();const ref=window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',user.uid);const snap=await window.pdkFirebaseFns.getDoc(ref);
- if(snap.exists()){const p=snap.data();staffProfile={id:user.uid,...p};if(p.name!==name||p.role!==staffRole)showToast('This device is already registered as '+(p.name||'Staff')+' · '+staffLabels(p.role))}
- else{const empty={name,role:staffRole,active:false,permissions:{},createdAt:new Date().toISOString()};await window.pdkFirebaseFns.setDoc(ref,empty);staffProfile={id:user.uid,...empty}}
- localStorage.setItem('pdkStaffSession',JSON.stringify({uid:user.uid,name,role:staffRole}));await staffLoadSharedState();startStaffRealtime();closeStaffLogin();renderStaffSession();applyStaffUI();showToast(staffProfile.active?'Staff access ready':'Waiting for Owner approval')}
- catch(e){showToast('Staff Login failed: '+(e.code||'error'))}
+ const name=el('staffNameInput')?.value.trim();
+ const status=el('staffLoginStatus');
+ if(!name){if(status)status.textContent='Please enter your username.';showToast('Username ထည့်ပါ');return}
+ if(status)status.textContent='Signing in…';
+ try{
+  const user=await staffEnsureAuth();
+  const ref=window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',user.uid);
+  const snap=await window.pdkFirebaseFns.getDoc(ref);
+  if(snap.exists()){
+    const p=snap.data();
+    if((p.name||'').trim().toLowerCase()!==name.toLowerCase()||p.role!==staffRole){
+      if(status)status.textContent='ဒီဖုန်းက Staff account တစ်ခုနဲ့ ချိတ်ထားပြီးသားပါ။ Owner သတ်မှတ်ထားတဲ့ Staff ကိုသာ Login ဝင်နိုင်ပါတယ်။';
+      showToast('This device is already registered as '+(p.name||'Staff')+' · '+staffLabels(p.role));
+      return;
+    }
+    staffProfile={id:user.uid,...p};
+  }else{
+    const empty={name,role:staffRole,active:false,permissions:{},createdAt:new Date().toISOString()};
+    await window.pdkFirebaseFns.setDoc(ref,empty);
+    staffProfile={id:user.uid,...empty};
+  }
+  localStorage.setItem('pdkStaffSession',JSON.stringify({uid:user.uid,name:staffProfile.name,role:staffProfile.role}));
+  await staffLoadSharedState();
+  startStaffRealtime();
+  renderStaffSession();
+  applyStaffUI();
+  if(staffProfile.active){
+    closeStaffLogin();
+    if(status)status.textContent='Signed in successfully.';
+    showToast('Staff Login successful');
+  }else{
+    if(status)status.textContent='⏳ Waiting for Owner approval. Please wait…';
+    showToast('Owner approval is required');
+  }
+ }catch(e){
+  if(status)status.textContent='Login failed. Please try again.';
+  showToast('Staff Login failed: '+(e.code||'error'));
+ }
 }
 function closeStaffLogin(){el('staffLogin')?.classList.remove('show')}
 function openStaffLogin(){el('staffLogin')?.classList.add('show');el('staffNameInput')?.focus()}
-async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}if(staffPermUnsub){staffPermUnsub();staffPermUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await window.pdkFirebaseFns.signOut(window.pdkAuth);renderStaffSession();openStaffLogin()}catch(e){}}
+async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}if(staffPermUnsub){staffPermUnsub();staffPermUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await window.pdkFirebaseFns.signOut(window.pdkAuth);renderStaffSession();const st=el('staffLoginStatus');if(st)st.textContent='Signed out. Please sign in again.';openStaffLogin()}catch(e){}}
 function renderStaffSession(){const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
 function applyStaffUI(){
  const owner=isOwnerUser(),staff=!!staffProfile&&!owner;const mg=el('staffManagementCard');if(mg)mg.style.display=owner?'block':'none';
@@ -313,7 +359,7 @@ async function toggleStaffActive(uid,on){if(!isOwnerUser())return;try{await wind
 async function removeStaff(uid){if(!isOwnerUser()||!confirm('Remove this staff account?'))return;try{await window.pdkFirebaseFns.deleteDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',uid));showToast('Staff removed')}catch(e){showToast('Remove failed')}}
 async function staffSaveShared(){if(!staffProfile?.active||!window.pdkAuth.currentUser?.isAnonymous)return false;try{await window.pdkFirebaseFns.setDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'),{tickets:JSON.parse(localStorage.getItem('pdkTickets')||'[]').map(t=>({...t,image:''})),eventSchedule:JSON.parse(localStorage.getItem('pdkEventSchedule')||'{}'),updatedAt:new Date().toISOString()},{merge:true});return true}catch(e){showToast('Staff cloud save failed');return false}}
 async function ownerMirrorShared(){if(!isOwnerUser())return;try{await window.pdkFirebaseFns.setDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'),{tickets:JSON.parse(localStorage.getItem('pdkTickets')||'[]').map(t=>({...t,image:''})),eventSchedule:JSON.parse(localStorage.getItem('pdkEventSchedule')||'{}'),founderData:{},updatedAt:new Date().toISOString()},{merge:true})}catch(e){console.warn('owner mirror',e)}}
-window.pdkStaffAuthReady=async user=>{const s=JSON.parse(localStorage.getItem('pdkStaffSession')||'null');if(s?.uid===user.uid){const snap=await window.pdkFirebaseFns.getDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',user.uid));if(snap.exists()){staffProfile={id:user.uid,...snap.data()};await staffLoadSharedState();startStaffRealtime();renderStaffSession();applyStaffUI();closeStaffLogin();return}}openStaffLogin()};
+window.pdkStaffAuthReady=async user=>{const s=JSON.parse(localStorage.getItem('pdkStaffSession')||'null');if(s?.uid===user.uid){const snap=await window.pdkFirebaseFns.getDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',user.uid));if(snap.exists()){staffProfile={id:user.uid,...snap.data()};await staffLoadSharedState();startStaffRealtime();renderStaffSession();applyStaffUI();if(staffProfile.active){closeStaffLogin();return}const st=el('staffLoginStatus');if(st)st.textContent='⏳ Waiting for Owner approval. Please wait…';openStaffLogin();return}}openStaffLogin()};
 window.pdkOwnerReady=()=>{startOwnerStaffRealtime();applyStaffUI();ownerMirrorShared()};
 setTimeout(()=>{const u=window.pdkAuth?.currentUser;if(u?.isAnonymous){window.pdkStaffAuthReady?.(u)}else if(!isOwnerUser()){localStorage.removeItem("pdkStaffSession");staffProfile=null;openStaffLogin()}},2200);
 const originalPersist=window.persistTickets;window.persistTickets=function(){const ok=originalPersist.apply(this,arguments);if(staffProfile?.active&&!isOwnerUser())staffSaveShared();else if(isOwnerUser())ownerMirrorShared();return ok};
