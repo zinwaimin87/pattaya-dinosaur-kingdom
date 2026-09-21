@@ -23,6 +23,17 @@
 
 <style>
 .firebase-card{margin-top:14px}.firebase-status{display:flex;align-items:center;gap:9px;margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.045);color:var(--muted);font-size:12px}.firebase-dot{width:9px;height:9px;border-radius:50%;background:#9aa9b5;box-shadow:0 0 8px rgba(154,169,181,.25)}.firebase-dot.ok{background:var(--lime);box-shadow:0 0 12px rgba(183,243,61,.55)}.firebase-dot.warn{background:var(--orange);box-shadow:0 0 12px rgba(255,159,47,.45)}.firebase-user{display:flex;align-items:center;gap:10px;margin-top:10px}.firebase-user img{width:34px;height:34px;border-radius:50%;border:1px solid var(--line)}.firebase-user div{min-width:0}.firebase-user strong,.firebase-user small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.firebase-user small{color:var(--muted);margin-top:2px}.firebase-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.firebase-actions .btn{flex:1;min-width:145px}.firebase-note{margin-top:9px;color:var(--muted);font-size:11px;line-height:1.5}
+</style><style>
+.staff-access-card{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(255,48,173,.16),rgba(32,217,255,.10) 45%,rgba(183,243,61,.10))}
+.staff-access-card:before,.staff-access-card:after{content:"";position:absolute;border-radius:50%;filter:blur(3px);opacity:.35;pointer-events:none;animation:staffFloat 6s ease-in-out infinite}
+.staff-access-card:before{width:150px;height:150px;background:#20d9ff;right:-55px;top:-55px}.staff-access-card:after{width:110px;height:110px;background:#ff42b5;left:-45px;bottom:-45px;animation-delay:-2s}
+@keyframes staffFloat{50%{transform:translate3d(0,18px,0) scale(1.08)}}
+.staff-title-row{display:flex;align-items:center;gap:12px}.staff-3d-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:29px;background:linear-gradient(145deg,#20d9ff,#8b5cff 48%,#ff42b5);box-shadow:inset 0 2px 5px rgba(255,255,255,.35),0 12px 28px rgba(32,217,255,.22);transform:perspective(100px) rotateX(7deg) rotateY(-8deg);animation:staffIcon 3.5s ease-in-out infinite}
+@keyframes staffIcon{50%{transform:perspective(100px) rotateX(-5deg) rotateY(9deg) translateY(-4px)}}
+.staff-list{display:grid;gap:10px;margin-top:12px}.staff-row{padding:14px;border-radius:17px;border:1px solid var(--line);background:rgba(2,16,28,.48);position:relative}.staff-row-head{display:flex;align-items:center;gap:10px}.staff-avatar{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(32,217,255,.2),rgba(255,66,181,.18));font-size:21px}.staff-meta{min-width:0;flex:1}.staff-meta strong,.staff-meta small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.staff-meta small{color:var(--muted);margin-top:3px}.staff-status{padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(255,159,47,.1);color:#ffd39a;border:1px solid rgba(255,159,47,.2)}.staff-status.on{background:rgba(183,243,61,.1);color:#ddff9d;border-color:rgba(183,243,61,.22)}.staff-perms{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.perm-chip{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:11px;background:rgba(255,255,255,.045);font-size:10px;color:#d8e8f2}.perm-chip input{accent-color:#20d9ff}.staff-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.staff-me{margin-top:12px;padding:12px;border-radius:14px;background:rgba(183,243,61,.07);border:1px solid rgba(183,243,61,.17);font-size:11px;color:#dcf8ba}
+.staff-login{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 20% 20%,rgba(32,217,255,.22),transparent 35%),radial-gradient(circle at 80% 80%,rgba(255,66,181,.20),transparent 38%),rgba(0,4,10,.82);backdrop-filter:blur(18px)}
+.staff-login.show{display:flex}.staff-login-card{width:min(520px,100%);padding:24px;border-radius:30px;border:1px solid rgba(255,255,255,.15);background:linear-gradient(145deg,rgba(11,45,67,.96),rgba(7,18,33,.98));box-shadow:0 30px 100px rgba(0,0,0,.6);position:relative;overflow:hidden}.staff-login-card:after{content:"🦖";position:absolute;right:-12px;bottom:-55px;font-size:150px;opacity:.07;transform:rotate(-12deg)}.staff-login-top{text-align:center;position:relative;z-index:1}.staff-login-logo{width:88px;height:88px;margin:0 auto 13px;border-radius:26px;display:grid;place-items:center;font-size:47px;background:linear-gradient(145deg,#20d9ff,#7a5cff 48%,#ff42b5);box-shadow:0 18px 45px rgba(32,217,255,.2),inset 0 2px 6px rgba(255,255,255,.35);animation:staffLogo 3s ease-in-out infinite}.staff-login-top h2{margin:0;font-size:25px}.staff-login-top p{margin:7px 0 18px;color:var(--muted);font-size:12px;line-height:1.55}.staff-login-form{position:relative;z-index:1;display:grid;gap:11px}.staff-login-form input,.staff-login-form select{width:100%;border:1px solid rgba(255,255,255,.13);background:rgba(2,14,27,.75);color:#fff;border-radius:15px;padding:14px;outline:none;font:600 13px inherit}.staff-login-form input:focus{border-color:#20d9ff;box-shadow:0 0 0 4px rgba(32,217,255,.08)}.staff-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.staff-role{border:1px solid var(--line);border-radius:15px;padding:12px;background:rgba(255,255,255,.045);cursor:pointer;color:#fff;text-align:left}.staff-role.selected{border-color:rgba(32,217,255,.55);background:linear-gradient(135deg,rgba(32,217,255,.16),rgba(255,66,181,.10));box-shadow:0 0 0 1px rgba(32,217,255,.08)}.staff-role b{display:block;font-size:12px}.staff-role span{display:block;color:var(--muted);font-size:10px;margin-top:4px;line-height:1.35}.staff-login-actions{display:flex;gap:8px;margin-top:4px}.staff-login-actions .btn{flex:1}.staff-session-bar{position:fixed;right:12px;top:12px;z-index:25;display:none;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;background:rgba(7,25,40,.9);border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 25px rgba(0,0,0,.25);font-size:10px}.staff-session-bar.show{display:flex}.staff-session-dot{width:8px;height:8px;border-radius:50%;background:#b7f33d;box-shadow:0 0 10px #b7f33d}.staff-session-bar button{border:0;background:transparent;color:#fff;cursor:pointer;font-size:13px}.staff-empty{padding:14px;border-radius:14px;border:1px dashed var(--line);color:var(--muted);font-size:11px;text-align:center}
+@media(max-width:560px){.staff-perms{grid-template-columns:1fr}.staff-role-grid{grid-template-columns:1fr}.staff-login-card{padding:20px;border-radius:25px}}
 </style></head>
 <body>
 <div class="app">
@@ -72,6 +83,14 @@
         </div>
       </div>
     </div>
+    <div class="card setting-card staff-access-card" id="staffManagementCard" style="display:none">
+      <div class="setting-item" style="background:transparent;border:0;padding:0">
+        <div class="staff-title-row"><div class="staff-3d-icon">👥</div><div class="setting-copy"><strong id="staffManageTitle">Staff Access Control</strong><small id="staffManageSub">Manage staff accounts and permissions from the Owner device.</small></div></div>
+      </div>
+      <div class="setting-status" id="staffManageStatus">New staff are pending until Owner activates them.</div>
+      <div class="staff-list" id="staffList"><div class="staff-empty">No staff yet.</div></div>
+    </div>
+
     <div class="card setting-card">
       <div class="setting-item">
         <div class="setting-icon">🛡️</div>
@@ -90,16 +109,33 @@
   </div>
 </section>
 </main>
+<div class="staff-login" id="staffLogin">
+  <div class="staff-login-card">
+    <div class="staff-login-top"><div class="staff-login-logo">🦖</div><h2>Staff Access</h2><p>Enter your name and choose your work role. Owner controls your permissions.</p></div>
+    <div class="staff-login-form">
+      <input id="staffNameInput" maxlength="50" placeholder="Staff name">
+      <div class="staff-role-grid">
+        <button type="button" class="staff-role selected" data-role="sale" onclick="selectStaffRole('sale')"><b>🎟️ Sale Staff</b><span>Ticket sales & quantity</span></button>
+        <button type="button" class="staff-role" data-role="entry" onclick="selectStaffRole('entry')"><b>🚪 Entry Staff</b><span>Entry tickets & quantity</span></button>
+        <button type="button" class="staff-role" data-role="customer" onclick="selectStaffRole('customer')"><b>💬 Customer Service</b><span>Customer support & ticket view</span></button>
+        <button type="button" class="staff-role" data-role="event" onclick="selectStaffRole('event')"><b>🦖 Event Staff</b><span>Event schedule & event work</span></button>
+      </div>
+      <div class="staff-login-actions"><button class="btn" onclick="staffLogin()">🚀 Enter Staff Area</button></div>
+      <div class="help" id="staffLoginHelp">Owner can turn access on/off and change permissions anytime.</div>
+    </div>
+  </div>
+</div>
+<div class="staff-session-bar" id="staffSessionBar"><span class="staff-session-dot"></span><span id="staffSessionText">Staff</span><button onclick="staffLogout()" title="Logout">×</button></div>
 <div class="modal" id="eventModal" onclick="if(event.target===this)closeEventModal()"><div class="modal-card"><div class="modal-head"><div><h3>DINO MEET &amp; GREET</h3><div class="help">Set a different number of show times for each day. Monday can have 3 times, Saturday can have 5 times, etc.</div></div><button class="close" onclick="closeEventModal()">×</button></div><div class="full"><label>Weekly Schedule</label><div id="eventDayScheduleEditor" class="day-schedule-editor"></div></div><div class="hero-actions"><button class="btn" onclick="saveEventSchedule()">Save Schedule</button><button class="btn secondary" onclick="closeEventModal()">Cancel</button></div></div></div><div class="modal" id="ticketModal" onclick="if(event.target===this)closeTicketModal()"><div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add Ticket</h3><div class="help">Upload a ticket image from your phone. The image will automatically fit the full area without cropping.</div></div><button class="close" onclick="closeTicketModal()">×</button></div><div class="upload-box"><div class="upload-preview" id="uploadPreview"><span>🎟️</span></div><label class="file-label">📷 Choose ticket image<input id="ticketImageInput" type="file" accept="image/*"></label><div class="help">JPG / PNG / WEBP • Full image shown with “contain” so the original picture is not cut off.</div></div><div class="form-grid form"><div><label id="modalNameLabel">Ticket Name</label><input id="modalName" placeholder="Adult Ticket"></div><div><label id="modalPriceLabel">Price (THB)</label><input id="modalPrice" type="number" min="0" step="1" placeholder="600"></div><div><label id="modalQtyLabel">Quantity</label><input id="modalQty" type="number" min="0" step="1" value="0" placeholder="0"></div><div><label id="modalTypeLabel">Type</label><select id="modalType"><option value="adult">Adult</option><option value="child">Child</option><option value="family">Family</option></select></div><div><label id="modalCategoryLabel">Category</label><select id="modalCategory"><option value="sale">Sale Ticket</option><option value="entry">Entry Ticket</option><option value="playing">Playing Ticket</option></select></div><div class="full"><label id="modalDescLabel">Description</label><input id="modalDesc" placeholder="Ticket description"></div></div><div class="hero-actions"><button class="btn" onclick="saveTicket()" id="modalSave">Save Ticket</button><button class="btn secondary" onclick="closeTicketModal()">Cancel</button></div></div></div><nav class="bottom"><div class="nav"><button class="active" data-page="home"><span class="icon">⌂</span><span id="navHome">Home</span></button><button data-page="tickets"><span class="icon">🎟️</span><span id="navTickets">Tickets</span></button><button data-page="events"><span class="icon">🦖</span><span id="navEvents">Events</span></button><button data-page="saleTicket"><span class="icon">🧾</span><span id="navSales">Sale</span></button><button data-page="language"><span class="icon">文</span><span id="navLanguage">Language</span></button><button data-page="settings"><span class="icon">⚙️</span><span id="navSetting">Setting</span></button></div></nav>
 <div id="toast" class="toast"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp, onSnapshot, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyCYTmPcPeMNAFUS9x34CneBOlwRwDPujdY",authDomain:"pattaya-dinosaur-kingdom-7314c.firebaseapp.com",projectId:"pattaya-dinosaur-kingdom-7314c",storageBucket:"pattaya-dinosaur-kingdom-7314c.firebasestorage.app",messagingSenderId:"239503411474",appId:"1:239503411474:web:575eb1c41258a36f730bcb"};
-const firebaseApp=initializeApp(firebaseConfig),auth=getAuth(firebaseApp),db=getFirestore(firebaseApp),provider=new GoogleAuthProvider();
+const firebaseApp=initializeApp(firebaseConfig),auth=getAuth(firebaseApp),db=getFirestore(firebaseApp),provider=new GoogleAuthProvider();window.pdkAuth=auth;window.pdkDb=db;
 let started=false,busy=false;
 const el=id=>document.getElementById(id);
 function ownerEmail(){try{return String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase()}catch{return ""}}
@@ -122,7 +158,7 @@ async function cloudLoad(user){
   try{const snap=await getDoc(doc(db,"owners",user.uid,"app","state"));if(!snap.exists()){await cloudSave();return true}const d=snap.data()||{};if(window.pdkApplyCloudState)window.pdkApplyCloudState(d);setUI("ok","Cloud data loaded successfully.",user);return true}
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
-window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Firebase is not connected.");return}const expected=ownerEmail();if(!expected||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user)})};
+window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Firebase is not connected.");return}if(user.isAnonymous){setUI("ok","Staff session connected.");if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(user);return}const expected=ownerEmail();if(!expected||!user.email||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user);if(window.pdkOwnerReady)window.pdkOwnerReady(user)})};
 window.pdkFirebaseLogin=async()=>{const expected=ownerEmail();if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}try{const r=await signInWithPopup(auth,provider);if(r.user.email.toLowerCase()!==expected){await signOut(auth);showToast(current==="my"?"Owner Gmail မကိုက်ညီပါ":"This Google account does not match Owner Gmail")}}catch(e){setUI("warn","Google sign-in failed: "+(e.code||"error"));showToast("Google Login: "+(e.code||"failed"))}};
 window.pdkFirebaseLogout=()=>signOut(auth);
 window.pdkFirebaseSyncNow=async()=>{if(!auth.currentUser){showToast(current==="my"?"Google Login အရင်ဝင်ပါ":"Sign in with Google first");return}if(await cloudSave())showToast(current==="my"?"Firebase Sync ပြီးပါပြီ":"Firebase sync completed")};
@@ -231,6 +267,57 @@ function importBackup(e){
 }
 function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),1700)}
 $$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('.lang').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));apply('en',false);if(window.pdkFirebaseStart)window.pdkFirebaseStart();
+</script>
+<script>
+const STAFF_ROLES={sale:'Sale Staff',entry:'Entry Staff',customer:'Customer Service',event:'Event Staff'};
+const STAFF_PERMS=[['viewTickets','🎟️ Ticket ကြည့်','Ticket View'],['sellTickets','🧾 Ticket ရောင်း','Ticket Sales'],['editQuantity','🔢 Quantity ပြင်','Quantity Edit'],['editTickets','✏️ Ticket ပြင်','Ticket Settings'],['viewEvents','🦖 Event ကြည့်','Event View'],['editEvents','⚙️ Event ပြင်','Event Settings'],['customerService','💬 Customer Service','Customer Service']];
+let staffRole='sale',staffProfile=null,staffUnsub=null,ownerStaffUnsub=null;
+const staffPerms=p=>Object.assign({},p||{});
+function staffCan(k){return !!staffProfile?.active&&staffProfile?.permissions?.[k]===true}
+function selectStaffRole(role){staffRole=role;document.querySelectorAll('.staff-role').forEach(b=>b.classList.toggle('selected',b.dataset.role===role))}
+function staffLabels(role){return STAFF_ROLES[role]||role}
+function isOwnerUser(){const u=window.pdkAuth?.currentUser;return !!u&&!u.isAnonymous&&u.email&&u.email.toLowerCase()===ownerEmail()}
+async function staffEnsureAuth(){if(window.pdkAuth?.currentUser?.isAnonymous)return window.pdkAuth.currentUser;return (await signInAnonymously(window.pdkAuth)).user}
+async function staffLoadSharedState(){try{const s=await getDoc(doc(window.pdkDb,'staffAccess','state'));if(s.exists())window.pdkApplyCloudState?.(s.data())}catch(e){console.warn(e)}}
+function startStaffRealtime(){if(staffUnsub)staffUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;staffUnsub=onSnapshot(doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e))}
+function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=onSnapshot(collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
+async function staffLogin(){
+ const name=el('staffNameInput')?.value.trim();if(!name){showToast('Staff name ထည့်ပါ');return}
+ try{const user=await staffEnsureAuth();const ref=doc(window.pdkDb,'staffAccess','users',user.uid);const snap=await getDoc(ref);
+ if(snap.exists()){const p=snap.data();if(p.name!==name||p.role!==staffRole)await setDoc(ref,{name,role:staffRole},{merge:true});staffProfile={id:user.uid,...p,name,role:staffRole}}
+ else{const empty={name,role:staffRole,active:false,permissions:{},createdAt:new Date().toISOString()};await setDoc(ref,empty);staffProfile={id:user.uid,...empty}}
+ localStorage.setItem('pdkStaffSession',JSON.stringify({uid:user.uid,name,role:staffRole}));await staffLoadSharedState();startStaffRealtime();closeStaffLogin();renderStaffSession();applyStaffUI();showToast(staffProfile.active?'Staff access ready':'Waiting for Owner approval')}
+ catch(e){showToast('Staff Login failed: '+(e.code||'error'))}
+}
+function closeStaffLogin(){el('staffLogin')?.classList.remove('show')}
+function openStaffLogin(){el('staffLogin')?.classList.add('show');el('staffNameInput')?.focus()}
+async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await signOut(window.pdkAuth);renderStaffSession();openStaffLogin()}catch(e){}}
+function renderStaffSession(){const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
+function applyStaffUI(){
+ const owner=isOwnerUser(),staff=!!staffProfile&&!owner;const mg=el('staffManagementCard');if(mg)mg.style.display=owner?'block':'none';
+ if(staff&&!staffProfile.active){document.querySelectorAll('.bottom,.main').forEach(x=>x.style.filter='blur(1px)')}
+ else document.querySelectorAll('.bottom,.main').forEach(x=>x.style.filter='none');
+ if(staff&&staffProfile.active&&!staffCan('viewTickets'))document.querySelectorAll('[data-page="tickets"],[data-page="saleTicket"]').forEach(x=>x.style.display='none');
+}
+function renderStaffManagement(){
+ const box=el('staffList');if(!box)return;const docs=window.pdkStaffDocs||[];if(!docs.length){box.innerHTML='<div class="staff-empty">No staff yet. Staff members will appear here after they enter their name and role.</div>';return}
+ box.innerHTML=docs.map(s=>{const p=staffPerms(s.permissions);return '<div class="staff-row"><div class="staff-row-head"><div class="staff-avatar">'+(s.role==='event'?'🦖':s.role==='customer'?'💬':s.role==='entry'?'🚪':'🎟️')+'</div><div class="staff-meta"><strong>'+escapeHtml(s.name||'Staff')+'</strong><small>'+escapeHtml(staffLabels(s.role))+'</small></div><span class="staff-status '+(s.active?'on':'')+'">'+(s.active?'ACTIVE':'PENDING')+'</span></div><div class="staff-perms">'+STAFF_PERMS.map(([k,my,en])=>'<label class="perm-chip"><input type="checkbox" '+(p[k]?'checked':'')+' onchange="updateStaffPerm(\''+s.id+'\',\''+k+'\',this.checked)"> <span>'+escapeHtml(current==='my'?my:en)+'</span></label>').join('')+'</div><div class="staff-actions"><button class="btn '+(s.active?'secondary':'orange')+'" onclick="toggleStaffActive(\''+s.id+'\','+(!s.active)+')">'+(s.active?'🔒 Disable Staff':'✅ Activate Staff')+'</button><button class="mini danger" onclick="removeStaff(\''+s.id+'\')">🗑️ Remove</button></div></div>'}).join('');
+}
+async function updateStaffPerm(uid,key,val){if(!isOwnerUser())return;try{const s=window.pdkStaffDocs?.find(x=>x.id===uid);if(!s)return;const perms=Object.assign({},s.permissions||{}, {[key]:!!val});await setDoc(doc(window.pdkDb,'staffAccess','users',uid),{permissions:perms,updatedAt:new Date().toISOString()},{merge:true})}catch(e){showToast('Permission update failed')}}
+async function toggleStaffActive(uid,on){if(!isOwnerUser())return;try{await setDoc(doc(window.pdkDb,'staffAccess','users',uid),{active:!!on,updatedAt:new Date().toISOString()},{merge:true});showToast(on?'Staff activated':'Staff disabled')}catch(e){showToast('Staff status update failed')}}
+async function removeStaff(uid){if(!isOwnerUser()||!confirm('Remove this staff account?'))return;try{await deleteDoc(doc(window.pdkDb,'staffAccess','users',uid));showToast('Staff removed')}catch(e){showToast('Remove failed')}}
+async function staffSaveShared(){if(!staffProfile?.active||!window.pdkAuth.currentUser?.isAnonymous)return false;try{await setDoc(doc(window.pdkDb,'staffAccess','state'),{tickets:JSON.parse(localStorage.getItem('pdkTickets')||'[]').map(t=>({...t,image:''})),eventSchedule:JSON.parse(localStorage.getItem('pdkEventSchedule')||'{}'),updatedAt:new Date().toISOString()},{merge:true});return true}catch(e){showToast('Staff cloud save failed');return false}}
+async function ownerMirrorShared(){if(!isOwnerUser())return;try{await setDoc(doc(window.pdkDb,'staffAccess','state'),{tickets:JSON.parse(localStorage.getItem('pdkTickets')||'[]').map(t=>({...t,image:''})),eventSchedule:JSON.parse(localStorage.getItem('pdkEventSchedule')||'{}'),founderData:{},updatedAt:new Date().toISOString()},{merge:true})}catch(e){console.warn('owner mirror',e)}}
+window.pdkStaffAuthReady=async user=>{const s=JSON.parse(localStorage.getItem('pdkStaffSession')||'null');if(s?.uid===user.uid){const snap=await getDoc(doc(window.pdkDb,'staffAccess','users',user.uid));if(snap.exists()){staffProfile={id:user.uid,...snap.data()};await staffLoadSharedState();startStaffRealtime();renderStaffSession();applyStaffUI();return}}openStaffLogin()};
+window.pdkOwnerReady=()=>{startOwnerStaffRealtime();applyStaffUI();ownerMirrorShared()};
+const originalPersist=window.persistTickets;window.persistTickets=function(){const ok=originalPersist.apply(this,arguments);if(staffProfile?.active&&!isOwnerUser())staffSaveShared();else if(isOwnerUser())ownerMirrorShared();return ok};
+const originalSaveEvent=window.saveEventSchedule;window.saveEventSchedule=function(){if(staffProfile&&!isOwnerUser()&&!staffCan('editEvents')){showToast('Owner has disabled Event editing');return}const r=originalSaveEvent.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
+const originalSaveTicket=window.saveTicket;window.saveTicket=function(){if(staffProfile&&!isOwnerUser()&&!staffCan('editTickets')){showToast('Owner has disabled Ticket editing');return}const r=originalSaveTicket.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
+const originalDeleteTicket=window.deleteTicket;window.deleteTicket=function(id){if(staffProfile&&!isOwnerUser()&&!staffCan('editTickets')){showToast('Owner has disabled Ticket editing');return}const r=originalDeleteTicket.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)ownerMirrorShared();return r};
+const originalChangeQty=window.changeCategoryQty;window.changeCategoryQty=function(id,delta,cat){if(staffProfile&&!isOwnerUser()&&!staffCan('editQuantity')){showToast('Owner has disabled Quantity editing');return}const r=originalChangeQty.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
+const originalUpdateQty=window.updateTicketQtyCategory;window.updateTicketQtyCategory=function(id,val,cat){if(staffProfile&&!isOwnerUser()&&!staffCan('editQuantity')){showToast('Owner has disabled Quantity editing');return}const r=originalUpdateQty.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
+const originalConfirm=window.confirmCategory;window.confirmCategory=function(cat){if(staffProfile&&!isOwnerUser()&&!staffCan('sellTickets')){showToast('Owner has disabled Ticket sales');return}const r=originalConfirm.apply(this,arguments);if(isOwnerUser())ownerMirrorShared();else if(staffProfile?.active)staffSaveShared();return r};
+const originalGo=window.go;window.go=function(page){if(staffProfile&&!isOwnerUser()){if(page==='settings'){showToast('Staff cannot open Owner Settings');return}if(page==='events'&&!staffCan('viewEvents')){showToast('Owner has disabled Event access');return}if(['tickets','saleTicket','entryTicket','playingTicket'].includes(page)&&!staffCan('viewTickets')){showToast('Owner has disabled Ticket access');return}}return originalGo.apply(this,arguments)};
 </script>
 <!-- PDK-SETTING-NAV-V3: Settings navigation is included in the production UI. -->
 </body></html>
