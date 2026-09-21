@@ -284,7 +284,7 @@ function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOw
 async function staffLogin(){
  const name=el('staffNameInput')?.value.trim();if(!name){showToast('Staff name ထည့်ပါ');return}
  try{const user=await staffEnsureAuth();const ref=doc(window.pdkDb,'staffAccess','users',user.uid);const snap=await getDoc(ref);
- if(snap.exists()){const p=snap.data();if(p.name!==name||p.role!==staffRole)await setDoc(ref,{name,role:staffRole},{merge:true});staffProfile={id:user.uid,...p,name,role:staffRole}}
+ if(snap.exists()){const p=snap.data();staffProfile={id:user.uid,...p};if(p.name!==name||p.role!==staffRole)showToast('This device is already registered as '+(p.name||'Staff')+' · '+staffLabels(p.role))}
  else{const empty={name,role:staffRole,active:false,permissions:{},createdAt:new Date().toISOString()};await setDoc(ref,empty);staffProfile={id:user.uid,...empty}}
  localStorage.setItem('pdkStaffSession',JSON.stringify({uid:user.uid,name,role:staffRole}));await staffLoadSharedState();startStaffRealtime();closeStaffLogin();renderStaffSession();applyStaffUI();showToast(staffProfile.active?'Staff access ready':'Waiting for Owner approval')}
  catch(e){showToast('Staff Login failed: '+(e.code||'error'))}
