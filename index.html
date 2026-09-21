@@ -271,7 +271,7 @@ $$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)))
 <script>
 const STAFF_ROLES={sale:'Sale Staff',entry:'Entry Staff',customer:'Customer Service',event:'Event Staff'};
 const STAFF_PERMS=[['viewTickets','🎟️ Ticket ကြည့်','Ticket View'],['sellTickets','🧾 Ticket ရောင်း','Ticket Sales'],['editQuantity','🔢 Quantity ပြင်','Quantity Edit'],['editTickets','✏️ Ticket ပြင်','Ticket Settings'],['viewEvents','🦖 Event ကြည့်','Event View'],['editEvents','⚙️ Event ပြင်','Event Settings'],['customerService','💬 Customer Service','Customer Service']];
-let staffRole='sale',staffProfile=null,staffUnsub=null,ownerStaffUnsub=null;
+let staffRole='sale',staffProfile=null,staffUnsub=null,staffPermUnsub=null,ownerStaffUnsub=null;
 const staffPerms=p=>Object.assign({},p||{});
 function staffCan(k){return !!staffProfile?.active&&staffProfile?.permissions?.[k]===true}
 function selectStaffRole(role){staffRole=role;document.querySelectorAll('.staff-role').forEach(b=>b.classList.toggle('selected',b.dataset.role===role))}
@@ -279,7 +279,7 @@ function staffLabels(role){return STAFF_ROLES[role]||role}
 function isOwnerUser(){const u=window.pdkAuth?.currentUser;return !!u&&!u.isAnonymous&&u.email&&u.email.toLowerCase()===ownerEmail()}
 async function staffEnsureAuth(){if(window.pdkAuth?.currentUser?.isAnonymous)return window.pdkAuth.currentUser;return (await signInAnonymously(window.pdkAuth)).user}
 async function staffLoadSharedState(){try{const s=await getDoc(doc(window.pdkDb,'staffAccess','state'));if(s.exists())window.pdkApplyCloudState?.(s.data())}catch(e){console.warn(e)}}
-function startStaffRealtime(){if(staffUnsub)staffUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;staffUnsub=onSnapshot(doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e))}
+function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staffPermUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;const uid=window.pdkAuth.currentUser.uid;staffUnsub=onSnapshot(doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e));staffPermUnsub=onSnapshot(doc(window.pdkDb,'staffAccess','users',uid),s=>{if(!s.exists()){staffProfile=null;renderStaffSession();openStaffLogin();return}staffProfile={id:uid,...s.data()};renderStaffSession();applyStaffUI();if(!staffProfile.active)showToast('Owner has disabled this staff account')},e=>console.warn('staff permission listener',e))}
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=onSnapshot(collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
 async function staffLogin(){
  const name=el('staffNameInput')?.value.trim();if(!name){showToast('Staff name ထည့်ပါ');return}
@@ -291,7 +291,7 @@ async function staffLogin(){
 }
 function closeStaffLogin(){el('staffLogin')?.classList.remove('show')}
 function openStaffLogin(){el('staffLogin')?.classList.add('show');el('staffNameInput')?.focus()}
-async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await signOut(window.pdkAuth);renderStaffSession();openStaffLogin()}catch(e){}}
+async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}if(staffPermUnsub){staffPermUnsub();staffPermUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await signOut(window.pdkAuth);renderStaffSession();openStaffLogin()}catch(e){}}
 function renderStaffSession(){const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
 function applyStaffUI(){
  const owner=isOwnerUser(),staff=!!staffProfile&&!owner;const mg=el('staffManagementCard');if(mg)mg.style.display=owner?'block':'none';
