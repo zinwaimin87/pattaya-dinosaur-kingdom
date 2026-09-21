@@ -140,7 +140,7 @@ const firebaseConfig={apiKey:"AIzaSyCYTmPcPeMNAFUS9x34CneBOlwRwDPujdY",authDomai
 const firebaseApp=initializeApp(firebaseConfig),auth=getAuth(firebaseApp),db=getFirestore(firebaseApp),provider=new GoogleAuthProvider();window.pdkAuth=auth;window.pdkDb=db;
 let started=false,busy=false;
 const el=id=>document.getElementById(id);
-function ownerEmail(){try{return String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase()}catch{return ""}}
+function ownerEmail(){try{return String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase()}catch{return ""}}\nwindow.pdkOwnerEmail=ownerEmail;
 function setUI(state,msg,user){
   const dot=el("firebaseDot"),status=el("firebaseStatus"),login=el("firebaseLoginBtn"),logout=el("firebaseLogoutBtn"),box=el("firebaseUser");
   if(dot)dot.className="firebase-dot "+(state==="ok"?"ok":state==="warn"?"warn":"");
@@ -280,7 +280,7 @@ const staffPerms=p=>Object.assign({},p||{});
 function staffCan(k){return !!staffProfile?.active&&staffProfile?.permissions?.[k]===true}
 function selectStaffRole(role){staffRole=role;document.querySelectorAll('.staff-role').forEach(b=>b.classList.toggle('selected',b.dataset.role===role))}
 function staffLabels(role){return STAFF_ROLES[role]||role}
-function isOwnerUser(){const u=window.pdkAuth?.currentUser;return !!u&&!u.isAnonymous&&u.email&&u.email.toLowerCase()===ownerEmail()}
+function isOwnerUser(){const u=window.pdkAuth?.currentUser;const expected=window.pdkOwnerEmail?.()||"";return !!u&&!u.isAnonymous&&u.email&&expected&&u.email.toLowerCase()===expected}
 async function staffEnsureAuth(){if(window.pdkAuth?.currentUser?.isAnonymous)return window.pdkAuth.currentUser;return (await window.pdkFirebaseFns.signInAnonymously(window.pdkAuth)).user}
 async function staffLoadSharedState(){try{const s=await window.pdkFirebaseFns.getDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'));if(s.exists())window.pdkApplyCloudState?.(s.data())}catch(e){console.warn(e)}}
 function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staffPermUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;const uid=window.pdkAuth.currentUser.uid;staffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e));staffPermUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',uid),s=>{if(!s.exists()){staffProfile=null;renderStaffSession();openStaffLogin();return}staffProfile={id:uid,...s.data()};renderStaffSession();applyStaffUI();if(!staffProfile.active)showToast('Owner has disabled this staff account')},e=>console.warn('staff permission listener',e))}
