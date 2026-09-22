@@ -294,7 +294,7 @@ async function cloudLoad(user){
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
 let ownerLoginBusy=false;
-async async function handlePdkAuthUser(user){
+async function handlePdkAuthUser(user){
   if(!user){
     setUI("","Please sign in to continue.");
     if(!ownerLoginBusy)window.pdkStaffAuthReady?.(null);
