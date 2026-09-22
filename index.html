@@ -155,7 +155,8 @@ const firebaseConfig={apiKey:"AIzaSyCYTmPcPeMNAFUS9x34CneBOlwRwDPujdY",authDomai
 const firebaseApp=initializeApp(firebaseConfig),auth=getAuth(firebaseApp),db=getFirestore(firebaseApp),provider=new GoogleAuthProvider();window.pdkAuth=auth;window.pdkDb=db;
 let started=false,busy=false;
 const el=id=>document.getElementById(id);
-function ownerEmail(){try{return String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase()}catch{return ""}}\nwindow.pdkOwnerEmail=ownerEmail;
+function ownerEmail(){try{return String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase()}catch{return ""}}
+window.pdkOwnerEmail=ownerEmail;
 function setUI(state,msg,user){
   const dot=el("firebaseDot"),status=el("firebaseStatus"),login=el("firebaseLoginBtn"),logout=el("firebaseLogoutBtn"),box=el("firebaseUser");
   if(dot)dot.className="firebase-dot "+(state==="ok"?"ok":state==="warn"?"warn":"");
@@ -284,7 +285,8 @@ function importBackup(e){
     showToast(current==='my'?'Data Backup ပြန်ထည့်ပြီးပါပြီ':current==='th'?'กู้คืนข้อมูลสำรองแล้ว':'Backup restored');
   }catch(err){showToast(current==='my'?'Backup File မမှန်ပါ':current==='th'?'ไฟล์สำรองไม่ถูกต้อง':'Invalid backup file')}e.target.value='';};reader.readAsText(file);
 }
-function applyStaffControlVisibility(){const owner=typeof isOwnerUser==='function'&&isOwnerUser();const staff=typeof staffProfile!=='undefined'&&!!staffProfile&&!owner;if(!staff)return;const canSell=staffCan('sellTickets'),canReset=staffCan('resetTickets');['saleConfirm','entryConfirm','playingConfirm'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display=canSell?'':'none'});['saleReset','entryReset','playingReset'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display=canReset?'':'none'});renderCategoryPage('sale');renderCategoryPage('entry');renderCategoryPage('playing');renderEventSchedule()}\nfunction showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),1700)}
+function applyStaffControlVisibility(){const owner=typeof isOwnerUser==='function'&&isOwnerUser();const staff=typeof staffProfile!=='undefined'&&!!staffProfile&&!owner;if(!staff)return;const canSell=staffCan('sellTickets'),canReset=staffCan('resetTickets');['saleConfirm','entryConfirm','playingConfirm'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display=canSell?'':'none'});['saleReset','entryReset','playingReset'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display=canReset?'':'none'});renderCategoryPage('sale');renderCategoryPage('entry');renderCategoryPage('playing');renderEventSchedule()}
+function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),1700)}
 $$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('.lang').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));apply('en',false);if(window.pdkFirebaseStart)window.pdkFirebaseStart();
 </script>
 <script>
