@@ -1,1 +1,2 @@
-Deployment trigger for the connected Vercel project. Staff login direct-handler fix is already in index.html.
+Deployment trigger for the connected Vercel project.
+Latest trigger: Owner Gmail login production deployment.
