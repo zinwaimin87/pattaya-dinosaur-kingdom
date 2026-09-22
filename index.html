@@ -148,8 +148,8 @@ body.access-pending .staff-session-bar{display:none}
         <button type="button" class="staff-role" data-role="event" onclick="selectStaffRole('event')"><b>🦖 Event Staff</b><span>Event schedule & event work</span></button>
       </div>
       <div class="staff-login-actions">
-        <button type="button" id="staffSignInBtn" class="btn staff-signin-btn">🔐 SIGN IN</button>
-        <button type="button" id="ownerLoginBtn" class="btn staff-owner-btn">👑 Owner Login</button>
+        <button type="button" id="staffSignInBtn" class="btn staff-signin-btn" onclick="window.pdkStaffButtonLogin ? window.pdkStaffButtonLogin() : window.staffLogin?.()">🔐 SIGN IN</button>
+        <button type="button" id="ownerLoginBtn" class="btn staff-owner-btn" onclick="window.pdkOwnerButtonLogin ? window.pdkOwnerButtonLogin() : window.ownerLoginFromStaff?.()">👑 Owner Login</button>
       </div>
       <div class="staff-login-status" id="staffLoginStatus">Owner can change your permissions anytime.</div>
     </div>
@@ -167,11 +167,9 @@ body.access-pending .staff-session-bar{display:none}
       e.preventDefault();
       e.stopPropagation();
       if(btn.id==='staffSignInBtn'){
-        if(typeof window.staffLogin==='function')window.staffLogin();
-        else { const s=document.getElementById('staffLoginStatus'); if(s)s.textContent='Loading login service…'; }
+        window.pdkStaffButtonLogin?.();
       }else{
-        if(typeof window.ownerLoginFromStaff==='function')window.ownerLoginFromStaff();
-        else { const s=document.getElementById('staffLoginStatus'); if(s)s.textContent='Loading Owner Login…'; }
+        window.pdkOwnerButtonLogin?.();
       }
     },true);
   }
@@ -341,12 +339,15 @@ function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staff
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
 function ownerLoginFromStaff(){
   const status=el('staffLoginStatus');
-  if(!window.pdkFirebaseLogin){if(status)status.textContent='⏳ Owner Login service ကို load လုပ်နေပါတယ်။';return;}
   if(status)status.textContent='👑 Opening Owner Google Login…';
-  // Keep the gate open until Firebase confirms the exact Owner Gmail.
-  // Start directly from the button click so mobile browsers keep the user gesture.
-  window.pdkFirebaseLogin?.();
+  const start=()=>{if(window.pdkFirebaseLogin){window.pdkFirebaseLogin();return true}return false};
+  if(start())return;
+  if(status)status.textContent='⏳ Owner Login service ကို load လုပ်နေပါတယ်။';
+  let tries=0;
+  const timer=setInterval(()=>{tries++;if(start()||tries>=20){clearInterval(timer);if(tries>=20&&!window.pdkFirebaseLogin&&status)status.textContent='Owner Login service မရသေးပါ။ Page ကို refresh လုပ်ပြီး ထပ်နှိပ်ပါ။'}},250);
 }
+window.pdkOwnerButtonLogin=ownerLoginFromStaff;
+window.pdkStaffButtonLogin=()=>{if(typeof window.staffLogin==='function'){window.staffLogin();return}const s=document.getElementById('staffLoginStatus');if(s)s.textContent='⏳ Sign In service ကို load လုပ်နေပါတယ်။';let tries=0;const timer=setInterval(()=>{tries++;if(typeof window.staffLogin==='function'||tries>=20){clearInterval(timer);if(typeof window.staffLogin==='function')window.staffLogin();else if(s)s.textContent='Sign In service မရသေးပါ။ Page ကို refresh လုပ်ပြီး ထပ်နှိပ်ပါ။'}},250)};
 async function staffLogin(){
  const name=el('staffNameInput')?.value.trim();
  if(!window.pdkFirebaseFns?.signInAnonymously){
