@@ -207,13 +207,9 @@ body.access-pending .staff-session-bar{display:none}
   window.pdkDirectOwnerLogin=function(){
     return window.pdkOpenOwnerGmail();
   };
-  document.addEventListener('click',function(e){
-    const btn=e.target?.closest?.('#ownerGmailModal .owner-gmail-continue');
-    if(!btn)return;
-    e.preventDefault();
-    e.stopPropagation();
-    window.pdkSubmitOwnerGmail();
-  },true);
+  // Continue uses its direct onclick handler.
+  // Do not register a second delegated click handler because duplicate
+  // Firebase popup calls can cancel each other on Android/mobile browsers.
 })();
 </script>
 <div class="staff-login" id="staffLogin">
@@ -340,6 +336,10 @@ window.pdkFirebaseLogin=async()=>{
    return;
  }catch(e){
    const code=e?.code||"error";
+   const modal=document.getElementById("ownerGmailModal");
+   const status=document.getElementById("ownerGmailStatus");
+   if(modal)modal.classList.add("show");
+   if(status)status.textContent="Google Login error: "+code;
    if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){
      try{
        await signInWithRedirect(auth,provider);
