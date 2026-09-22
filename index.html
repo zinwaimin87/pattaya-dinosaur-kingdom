@@ -200,8 +200,6 @@ body.access-pending .staff-session-bar{display:none}
     const handler=(which)=>e=>run(which,e);
     sign.addEventListener('pointerup',handler('staff'),{passive:false});
     owner.addEventListener('pointerup',handler('owner'),{passive:false});
-    sign.addEventListener('click',handler('staff'),{passive:false});
-    owner.addEventListener('click',handler('owner'),{passive:false});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindStaffLoginButtons);else bindStaffLoginButtons();
 })();
