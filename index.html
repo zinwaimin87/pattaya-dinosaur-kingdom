@@ -353,6 +353,9 @@ function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('s
 $$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('.lang').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));apply('en',false);if(window.pdkFirebaseStart)window.pdkFirebaseStart();
 </script>
 <script>
+/* PDK STAFF LOGIN FIX: keep DOM helper in classic/global scope. */
+window.pdkEl=window.pdkEl||function(id){return document.getElementById(id)};
+const el=window.pdkEl;
 const STAFF_ROLES={sale:'Sale Staff',entry:'Entry Staff',customer:'Customer Service',event:'Event Staff'};
 const STAFF_PERMS=[['viewTickets','🎟️ Ticket ကြည့်','Ticket View'],['sellTickets','🧾 Ticket ရောင်း','Ticket Sales'],['editQuantity','🔢 Quantity ပြင်','Quantity Edit'],['editTickets','✏️ Ticket ပြင်','Ticket Settings'],['resetTickets','🔄 Quantity Reset','Quantity Reset'],['viewEvents','🦖 Event ကြည့်','Event View'],['editEvents','⚙️ Event ပြင်','Event Settings'],['customerService','💬 Customer Service','Customer Service']];
 let staffRole='sale',staffProfile=null,staffUnsub=null,staffPermUnsub=null,ownerStaffUnsub=null;
