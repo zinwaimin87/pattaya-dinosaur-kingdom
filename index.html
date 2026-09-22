@@ -327,36 +327,24 @@ window.pdkFirebaseLogin=async()=>{
  ownerLoginBusy=true;
  try{window.pdkPrepareOwnerLogin?.()}catch(_){}
  try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(_){}
- setUI("","Opening Owner Google Login…");
+ const status=document.getElementById("ownerGmailStatus");
+ const modal=document.getElementById("ownerGmailModal");
+ if(status)status.textContent="⏳ Google Login ကိုဖွင့်နေပါတယ်…";
+ // Use redirect as the primary flow on mobile/in-app browsers.
+ // Firebase documents redirect as the preferred mobile flow.
  try{
-   // IMPORTANT: call signInWithPopup immediately from the user's tap.
-   // Awaiting signOut() first breaks the user-gesture chain on mobile/in-app browsers
-   // and can cause the Google popup to be blocked/closed immediately.
-   await signInWithPopup(auth,provider);
+   await signInWithRedirect(auth,provider);
    return;
  }catch(e){
+   ownerLoginBusy=false;
    const code=e?.code||"error";
-   const modal=document.getElementById("ownerGmailModal");
-   const status=document.getElementById("ownerGmailStatus");
    if(modal)modal.classList.add("show");
    if(status)status.textContent="Google Login error: "+code;
-   if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){
-     try{
-       await signInWithRedirect(auth,provider);
-       return;
-     }catch(re){
-       ownerLoginBusy=false;
-       const rc=re?.code||"redirect-error";
-       setUI("warn","Google sign-in failed: "+rc);
-       showToast("Google Login: "+rc);
-       console.error("PDK owner redirect login error",re);
-       return;
-     }
-   }
-   ownerLoginBusy=false;
+   const staffStatus=document.getElementById("staffLoginStatus");
+   if(staffStatus)staffStatus.textContent="Google Login မဖွင့်နိုင်ပါ: "+code;
    setUI("warn","Google sign-in failed: "+code);
    showToast("Google Login: "+code);
-   console.error("PDK owner login error",e);
+   console.error("PDK owner redirect login error",e);
  }
 };
 getRedirectResult(auth).then(result=>{
