@@ -111,7 +111,7 @@ body.access-pending .staff-session-bar{display:none}
 #pdkInstallBtn{display:none;position:fixed;right:16px;bottom:92px;z-index:9999;border:0;border-radius:999px;padding:13px 18px;background:#ff9f1c;color:#061b2f;font-weight:800;box-shadow:0 8px 24px #0006;cursor:pointer}
 #pdkInstallBtn.show{display:block}
 </style></head>
-<body class="access-pending staff-gated">
+<body>
 <div class="app">
 <header class="top"><div class="banner"><img src="company-banner.jpg" alt="Pattaya Dinosaur Kingdom company banner"></div></header>
 <main class="main">
@@ -588,7 +588,7 @@ function importBackup(e){
 function applyStaffControlVisibility(){const owner=typeof isOwnerUser==='function'&&isOwnerUser();const staff=typeof staffProfile!=='undefined'&&!!staffProfile&&!owner;if(!staff)return;const canSell=staffCan('sellTickets'),canReset=staffCan('resetTickets');['saleConfirm','entryConfirm','playingConfirm'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display=canSell?'':'none'});['saleReset','entryReset','playingReset'].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display=canReset?'':'none'});renderCategoryPage('sale');renderCategoryPage('entry');renderCategoryPage('playing');renderEventSchedule()}
 function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),1700)}
 applyPdkUiMode();
-$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('.lang').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));apply('en',false);if(window.pdkFirebaseStart)window.pdkFirebaseStart();
+$('.nav button').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const p=b.dataset.page;if(p)go(p)}));$('.lang').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();apply(b.dataset.lang)}));apply('en',false);if(window.pdkFirebaseStart)window.pdkFirebaseStart();
 </script>
 <script>
 /* PDK STAFF LOGIN FIX: keep DOM helper in classic/global scope. */
@@ -717,6 +717,16 @@ async function staffLogin(){
 function closeStaffLogin(){el('staffLogin')?.classList.remove('show')}
 function openStaffLogin(){el('staffLogin')?.classList.add('show');el('staffNameInput')?.focus()}
 async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}if(staffPermUnsub){staffPermUnsub();staffPermUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await window.pdkFirebaseFns.signOut(window.pdkAuth);renderStaffSession();const st=el('staffLoginStatus');if(st)st.textContent='Signed out. Please sign in again.';openStaffLogin()}catch(e){}}
+document.addEventListener('click',e=>{
+  const nav=e.target.closest?.('.nav button[data-page]');
+  if(nav){
+    e.preventDefault();
+    e.stopPropagation();
+    const p=nav.dataset.page;
+    if(p)go(p);
+    return;
+  }
+});
 document.addEventListener('click',e=>{
   const owner=isOwnerUser(),staff=!!staffProfile&&!owner;
   if(staff){
