@@ -130,6 +130,44 @@ body.access-pending .staff-session-bar{display:none}
   </div>
 </section>
 </main>
+<script>
+(function(){
+  window.pdkDirectStaffLogin=function(){
+    const s=document.getElementById('staffLoginStatus');
+    if(s)s.textContent='⏳ SIGN IN ကိုလုပ်ဆောင်နေပါတယ်…';
+    if(typeof window.staffLogin==='function'){ window.staffLogin(); return false; }
+    let tries=0;
+    const timer=setInterval(function(){
+      tries++;
+      if(typeof window.staffLogin==='function'){
+        clearInterval(timer);
+        window.staffLogin();
+      }else if(tries>=30){
+        clearInterval(timer);
+        if(s)s.textContent='Sign In service မတက်လာသေးပါ။ Page ကို Refresh လုပ်ပါ။';
+      }
+    },200);
+    return false;
+  };
+  window.pdkDirectOwnerLogin=function(){
+    const s=document.getElementById('staffLoginStatus');
+    if(s)s.textContent='⏳ Owner Login ကိုဖွင့်နေပါတယ်…';
+    if(typeof window.ownerLoginFromStaff==='function'){ window.ownerLoginFromStaff(); return false; }
+    let tries=0;
+    const timer=setInterval(function(){
+      tries++;
+      if(typeof window.ownerLoginFromStaff==='function'){
+        clearInterval(timer);
+        window.ownerLoginFromStaff();
+      }else if(tries>=30){
+        clearInterval(timer);
+        if(s)s.textContent='Owner Login service မတက်လာသေးပါ။ Page ကို Refresh လုပ်ပါ။';
+      }
+    },200);
+    return false;
+  };
+})();
+</script>
 <div class="staff-login" id="staffLogin">
   <div class="staff-login-card">
     <div class="staff-login-top">
@@ -148,62 +186,14 @@ body.access-pending .staff-session-bar{display:none}
         <button type="button" class="staff-role" data-role="event" onclick="selectStaffRole('event')"><b>🦖 Event Staff</b><span>Event schedule & event work</span></button>
       </div>
       <div class="staff-login-actions">
-        <button type="button" id="staffSignInBtn" class="btn staff-signin-btn">🔐 SIGN IN</button>
-        <button type="button" id="ownerLoginBtn" class="btn staff-owner-btn">👑 Owner Login</button>
+        <button type="button" id="staffSignInBtn" class="btn staff-signin-btn" onclick="return window.pdkDirectStaffLogin()">🔐 SIGN IN</button>
+        <button type="button" id="ownerLoginBtn" class="btn staff-owner-btn" onclick="return window.pdkDirectOwnerLogin()">👑 Owner Login</button>
       </div>
       <div class="staff-login-status" id="staffLoginStatus">Owner can change your permissions anytime.</div>
     </div>
   </div>
 </div>
-<script>
-(function(){
-  function bindStaffLoginButtons(){
-    const sign=document.getElementById('staffSignInBtn');
-    const owner=document.getElementById('ownerLoginBtn');
-    if(!sign||!owner||sign.dataset.bound==='1')return;
-    sign.dataset.bound='1';
-    owner.dataset.bound='1';
-    const run=(which,e)=>{
-      e.preventDefault();
-      e.stopPropagation();
-      const status=document.getElementById('staffLoginStatus');
-      if(which==='staff'){
-        if(typeof window.staffLogin==='function'){ window.staffLogin(); return; }
-        if(status)status.textContent='⏳ Sign In service ကို load လုပ်နေပါတယ်။';
-        let tries=0;
-        const timer=setInterval(()=>{
-          tries++;
-          if(typeof window.staffLogin==='function'){
-            clearInterval(timer);
-            window.staffLogin();
-          }else if(tries>=20){
-            clearInterval(timer);
-            if(status)status.textContent='Sign In service မရသေးပါ။ Page ကို refresh လုပ်ပြီး ထပ်နှိပ်ပါ။';
-          }
-        },250);
-      }else{
-        if(typeof window.ownerLoginFromStaff==='function'){ window.ownerLoginFromStaff(); return; }
-        if(status)status.textContent='⏳ Owner Login service ကို load လုပ်နေပါတယ်။';
-        let tries=0;
-        const timer=setInterval(()=>{
-          tries++;
-          if(typeof window.ownerLoginFromStaff==='function'){
-            clearInterval(timer);
-            window.ownerLoginFromStaff();
-          }else if(tries>=20){
-            clearInterval(timer);
-            if(status)status.textContent='Owner Login service မရသေးပါ။ Page ကို refresh လုပ်ပြီး ထပ်နှိပ်ပါ။';
-          }
-        },250);
-      }
-    };
-    const handler=(which)=>e=>run(which,e);
-    sign.addEventListener('pointerup',handler('staff'),{passive:false});
-    owner.addEventListener('pointerup',handler('owner'),{passive:false});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindStaffLoginButtons);else bindStaffLoginButtons();
-})();
-</script>
+
 <div class="staff-session-bar" id="staffSessionBar"><span class="staff-session-dot"></span><span id="staffSessionText">Staff</span><button onclick="staffLogout()" title="Logout">×</button></div>
 <div class="modal" id="eventModal" onclick="if(event.target===this)closeEventModal()"><div class="modal-card"><div class="modal-head"><div><h3>DINO MEET &amp; GREET</h3><div class="help">Set a different number of show times for each day. Monday can have 3 times, Saturday can have 5 times, etc.</div></div><button class="close" onclick="closeEventModal()">×</button></div><div class="full"><label>Weekly Schedule</label><div id="eventDayScheduleEditor" class="day-schedule-editor"></div></div><div class="hero-actions"><button class="btn" onclick="saveEventSchedule()">Save Schedule</button><button class="btn secondary" onclick="closeEventModal()">Cancel</button></div></div></div><div class="modal" id="ticketModal" onclick="if(event.target===this)closeTicketModal()"><div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add Ticket</h3><div class="help">Upload a ticket image from your phone. The image will automatically fit the full area without cropping.</div></div><button class="close" onclick="closeTicketModal()">×</button></div><div class="upload-box"><div class="upload-preview" id="uploadPreview"><span>🎟️</span></div><label class="file-label">📷 Choose ticket image<input id="ticketImageInput" type="file" accept="image/*"></label><div class="help">JPG / PNG / WEBP • Full image shown with “contain” so the original picture is not cut off.</div></div><div class="form-grid form"><div><label id="modalNameLabel">Ticket Name</label><input id="modalName" placeholder="Adult Ticket"></div><div><label id="modalPriceLabel">Price (THB)</label><input id="modalPrice" type="number" min="0" step="1" placeholder="600"></div><div><label id="modalQtyLabel">Quantity</label><input id="modalQty" type="number" min="0" step="1" value="0" placeholder="0"></div><div><label id="modalTypeLabel">Type</label><select id="modalType"><option value="adult">Adult</option><option value="child">Child</option><option value="family">Family</option></select></div><div><label id="modalCategoryLabel">Category</label><select id="modalCategory"><option value="sale">Sale Ticket</option><option value="entry">Entry Ticket</option><option value="playing">Playing Ticket</option></select></div><div class="full"><label id="modalDescLabel">Description</label><input id="modalDesc" placeholder="Ticket description"></div></div><div class="hero-actions"><button class="btn" onclick="saveTicket()" id="modalSave">Save Ticket</button><button class="btn secondary" onclick="closeTicketModal()">Cancel</button></div></div></div><nav class="bottom"><div class="nav"><button class="active" data-page="home"><span class="icon">⌂</span><span id="navHome">Home</span></button><button data-page="tickets"><span class="icon">🎟️</span><span id="navTickets">Tickets</span></button><button data-page="events"><span class="icon">🦖</span><span id="navEvents">Events</span></button><button data-page="saleTicket"><span class="icon">🧾</span><span id="navSales">Sale</span></button><button data-page="language"><span class="icon">文</span><span id="navLanguage">Language</span></button><button data-page="settings"><span class="icon">⚙️</span><span id="navSetting">Setting</span></button></div></nav>
 <div id="toast" class="toast"></div>
