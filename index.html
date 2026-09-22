@@ -293,7 +293,7 @@ async function cloudLoad(user){
   try{const snap=await getDoc(doc(db,"owners",user.uid,"app","state"));if(!snap.exists()){await cloudSave();return true}const d=snap.data()||{};if(window.pdkApplyCloudState)window.pdkApplyCloudState(d);setUI("ok","Cloud data loaded successfully.",user);return true}
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
-async let ownerLoginBusy=false;
+let ownerLoginBusy=false;
 async function handlePdkAuthUser(user){
   if(!user){
     setUI("","Please sign in to continue.");
@@ -316,6 +316,7 @@ async function handlePdkAuthUser(user){
   }
   setUI("ok","Owner verified. Connecting to cloud…",user);
   await cloudLoad(user);
+  try{window.pdkFinalizeOwnerMode?.()}catch(_){}
   document.body.classList.remove("staff-gated","access-pending");
   closeStaffLogin();
   if(window.pdkOwnerReady)window.pdkOwnerReady(user);
@@ -328,6 +329,8 @@ window.pdkFirebaseLogin=async()=>{
  const expected=ownerEmail();
  if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}
  ownerLoginBusy=true;
+ // Hard-separate Staff and Owner sessions before Google authentication.
+ try{window.pdkPrepareOwnerLogin?.()}catch(_){}
  try{
    provider.setCustomParameters({login_hint:expected,prompt:"select_account"});
  }catch(e){}
@@ -492,8 +495,31 @@ const staffPerms=p=>Object.assign({},p||{});
 function staffCan(k){return !!staffProfile?.active&&staffProfile?.permissions?.[k]===true}
 function selectStaffRole(role){staffRole=role;document.querySelectorAll('.staff-role').forEach(b=>b.classList.toggle('selected',b.dataset.role===role))}
 function staffLabels(role){return STAFF_ROLES[role]||role}
+window.pdkPrepareOwnerLogin=()=>{
+  localStorage.removeItem('pdkStaffSession');
+  if(typeof staffProfile!=='undefined')staffProfile=null;
+  if(typeof staffUnsub!=='undefined'&&staffUnsub){staffUnsub();staffUnsub=null}
+  if(typeof staffPermUnsub!=='undefined'&&staffPermUnsub){staffPermUnsub();staffPermUnsub=null}
+  renderStaffSession();
+};
+window.pdkFinalizeOwnerMode=()=>{
+  localStorage.removeItem('pdkStaffSession');
+  if(typeof staffProfile!=='undefined')staffProfile=null;
+  if(typeof staffUnsub!=='undefined'&&staffUnsub){staffUnsub();staffUnsub=null}
+  if(typeof staffPermUnsub!=='undefined'&&staffPermUnsub){staffPermUnsub();staffPermUnsub=null}
+  renderStaffSession();
+  applyStaffUI();
+};
 function isOwnerUser(){const u=window.pdkAuth?.currentUser;const expected=window.pdkOwnerEmail?.()||"";return !!u&&!u.isAnonymous&&u.email&&expected&&u.email.toLowerCase()===expected}
-async function staffEnsureAuth(){if(window.pdkAuth?.currentUser?.isAnonymous)return window.pdkAuth.currentUser;return (await window.pdkFirebaseFns.signInAnonymously(window.pdkAuth)).user}
+async function staffEnsureAuth(){
+  const currentUser=window.pdkAuth?.currentUser;
+  if(currentUser?.isAnonymous)return currentUser;
+  // Explicitly leave Owner mode before starting a Staff anonymous session.
+  if(currentUser&&!currentUser.isAnonymous){
+    try{await window.pdkFirebaseFns.signOut(window.pdkAuth)}catch(_){}
+  }
+  return (await window.pdkFirebaseFns.signInAnonymously(window.pdkAuth)).user
+}
 async function staffLoadSharedState(){try{const s=await window.pdkFirebaseFns.getDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'));if(s.exists())window.pdkApplyCloudState?.(s.data())}catch(e){console.warn(e)}}
 function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staffPermUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;const uid=window.pdkAuth.currentUser.uid;staffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e));staffPermUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccessUsers',uid),s=>{if(!s.exists()){staffProfile=null;renderStaffSession();openStaffLogin();return}staffProfile={id:uid,...s.data()};renderStaffSession();applyStaffUI();applyStaffControlVisibility();if(!staffProfile.active)showToast('Owner has disabled this staff account')},e=>console.warn('staff permission listener',e))}
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.collection(window.pdkDb,'staffAccessUsers'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
