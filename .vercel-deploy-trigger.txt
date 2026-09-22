@@ -1,3 +1,3 @@
 Deployment trigger for the connected Vercel project.
-Latest trigger: Owner Google callback fix — 2026-09-22.
+Latest trigger: Force Vercel production deployment from main — 2026-09-22.
 Production should deploy the latest main branch commit automatically.
