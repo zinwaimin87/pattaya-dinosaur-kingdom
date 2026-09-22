@@ -329,28 +329,33 @@ window.pdkFirebaseLogin=async()=>{
  const expected=ownerEmail();
  if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}
  ownerLoginBusy=true;
- // Hard-separate Staff and Owner sessions before Google authentication.
  try{window.pdkPrepareOwnerLogin?.()}catch(_){}
- try{
-   provider.setCustomParameters({login_hint:expected,prompt:"select_account"});
- }catch(e){}
+ try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(_){}
  setUI("","Opening Owner Google Login…");
  try{
-   // Anonymous Staff sessions must be signed out before Owner Google authentication.
-   // This prevents the existing Staff session from keeping the UI in Staff mode.
-   if(auth.currentUser?.isAnonymous){
-     await signOut(auth);
-   }
-   // Redirect is the reliable Firebase OAuth flow on mobile/in-app browsers.
-   // Firebase recommends redirect on mobile devices.
-   await signInWithRedirect(auth,provider);
+   if(auth.currentUser?.isAnonymous) await signOut(auth);
+   // Try popup first so the Owner login works reliably on Vercel/mobile browsers.
+   // If the browser blocks the popup, fall back to Firebase redirect.
+   await signInWithPopup(auth,provider);
    return;
  }catch(e){
    const code=e?.code||"error";
+   if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){
+     try{
+       await signInWithRedirect(auth,provider);
+       return;
+     }catch(re){
+       ownerLoginBusy=false;
+       const rc=re?.code||"redirect-error";
+       setUI("warn","Google sign-in failed: "+rc);
+       showToast("Google Login: "+rc);
+       console.error("PDK owner redirect login error",re);
+       return;
+     }
+   }
    ownerLoginBusy=false;
    setUI("warn","Google sign-in failed: "+code);
-   const msg=code+((e?.message||"").slice(0,160)?" · "+e.message.slice(0,160):"");
-   showToast("Google Login: "+msg);
+   showToast("Google Login: "+code);
    console.error("PDK owner login error",e);
  }
 };
