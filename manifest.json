@@ -1,0 +1,19 @@
+{
+  "name": "Pattaya Dinosaur Kingdom",
+  "short_name": "PDK",
+  "description": "Pattaya Dinosaur Kingdom Ticket & Staff System",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#061b2f",
+  "theme_color": "#061b2f",
+  "icons": [
+    {
+      "src": "/icons/pdk-logo.svg",
+      "sizes": "48x48 192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
