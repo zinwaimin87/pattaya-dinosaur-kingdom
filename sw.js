@@ -1,5 +1,5 @@
-const CACHE='pdk-shell-v4';
-const SHELL=['/','/manifest.json','/icons/pdk-logo.webp?v=4'];
+const CACHE='pdk-shell-v5';
+const SHELL=['/','/manifest.json','/icons/pdk-logo.svg?v=5'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL).catch(()=>{})));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));e.waitUntil(self.clients.claim())});
 self.addEventListener('fetch',e=>{
