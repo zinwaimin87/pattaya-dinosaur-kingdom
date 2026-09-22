@@ -306,7 +306,11 @@ async function staffEnsureAuth(){if(window.pdkAuth?.currentUser?.isAnonymous)ret
 async function staffLoadSharedState(){try{const s=await window.pdkFirebaseFns.getDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'));if(s.exists())window.pdkApplyCloudState?.(s.data())}catch(e){console.warn(e)}}
 function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staffPermUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;const uid=window.pdkAuth.currentUser.uid;staffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e));staffPermUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',uid),s=>{if(!s.exists()){staffProfile=null;renderStaffSession();openStaffLogin();return}staffProfile={id:uid,...s.data()};renderStaffSession();applyStaffUI();applyStaffControlVisibility();if(!staffProfile.active)showToast('Owner has disabled this staff account')},e=>console.warn('staff permission listener',e))}
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
-async function ownerLoginFromStaff(){try{if(window.pdkAuth?.currentUser?.isAnonymous&&window.pdkFirebaseFns?.signOut)await window.pdkFirebaseFns.signOut(window.pdkAuth)}catch(e){}closeStaffLogin();window.pdkFirebaseLogin?.()}
+function ownerLoginFromStaff(){
+  closeStaffLogin();
+  // Start Google sign-in directly from the button click so mobile browsers do not block the popup.
+  window.pdkFirebaseLogin?.();
+}
 async function staffLogin(){
  const name=el('staffNameInput')?.value.trim();
  const status=el('staffLoginStatus');
