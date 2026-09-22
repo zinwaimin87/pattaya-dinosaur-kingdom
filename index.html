@@ -292,7 +292,26 @@ async function cloudLoad(user){
   try{const snap=await getDoc(doc(db,"owners",user.uid,"app","state"));if(!snap.exists()){await cloudSave();return true}const d=snap.data()||{};if(window.pdkApplyCloudState)window.pdkApplyCloudState(d);setUI("ok","Cloud data loaded successfully.",user);return true}
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
-window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Please sign in to continue.");window.pdkStaffAuthReady?.(null);return}if(user.isAnonymous){setUI("ok","Staff session connected.");if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(user);return}const expected=ownerEmail();if(!expected||!user.email||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user);if(window.pdkOwnerReady)window.pdkOwnerReady(user);document.body.classList.remove('staff-gated','access-pending');closeStaffLogin();})};
+async function handlePdkAuthUser(user){
+  if(!user){setUI("","Please sign in to continue.");window.pdkStaffAuthReady?.(null);return}
+  if(user.isAnonymous){setUI("ok","Staff session connected.");window.pdkStaffAuthReady?.(user);return}
+  const expected=ownerEmail();
+  const actual=String(user.email||"").trim().toLowerCase();
+  if(!expected||!actual||actual!==expected){
+    setUI("warn","Google account does not match Owner Gmail.",user);
+    try{await signOut(auth)}catch(_){}
+    return;
+  }
+  setUI("ok","Owner verified. Connecting to cloud…",user);
+  await cloudLoad(user);
+  document.body.classList.remove("staff-gated","access-pending");
+  closeStaffLogin();
+  if(window.pdkOwnerReady)window.pdkOwnerReady(user);
+  // Re-apply the Owner UI after redirect login so the staff gate cannot remain visible.
+  if(window.applyStaffUI)window.applyStaffUI();
+  document.querySelectorAll(".bottom,.main").forEach(x=>{x.style.pointerEvents="";x.style.userSelect=""});
+}
+window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,handlePdkAuthUser);};
 window.pdkFirebaseLogin=async()=>{
  const expected=ownerEmail();
  if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}
@@ -322,7 +341,15 @@ window.pdkFirebaseLogin=async()=>{
    showToast("Google Login: "+msg);
    console.error("PDK owner login error",e);
  }
-};getRedirectResult(auth).catch(e=>{const code=e?.code||"redirect-error";setUI("warn","Google redirect failed: "+code);showToast("Google Login: "+code);console.error("PDK owner redirect error",e)});
+};
+getRedirectResult(auth).then(result=>{
+  if(result?.user) return handlePdkAuthUser(result.user);
+}).catch(e=>{
+  const code=e?.code||"redirect-error";
+  setUI("warn","Google redirect failed: "+code);
+  showToast("Google Login: "+code);
+  console.error("PDK owner redirect error",e);
+});
 window.pdkFirebaseLogout=()=>signOut(auth);
 window.pdkFirebaseSyncNow=async()=>{if(!auth.currentUser){showToast(current==="my"?"Google Login အရင်ဝင်ပါ":"Sign in with Google first");return}if(await cloudSave())showToast(current==="my"?"Firebase Sync ပြီးပါပြီ":"Firebase sync completed")};
 window.pdkFirebaseQueueSync=()=>{clearTimeout(window.__pdkCloudTimer);window.__pdkCloudTimer=setTimeout(()=>cloudSave(),900)};
@@ -592,4 +619,4 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>setTimeout(refresh,1200));
 })();
 </script></body></html>
-<!-- PDK-Vercel-Trigger-2026-09-22-OWNER-GMAIL-FIX -->
+<!-- PDK-Vercel-Trigger-2026-09-22-OWNER-REDIRECT-FIX -->
