@@ -329,22 +329,33 @@ window.pdkFirebaseLogin=async()=>{
  try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(_){}
  const status=document.getElementById("ownerGmailStatus");
  const modal=document.getElementById("ownerGmailModal");
- if(status)status.textContent="⏳ Google Login ကိုဖွင့်နေပါတယ်…";
- // Use redirect as the primary flow on mobile/in-app browsers.
- // Firebase documents redirect as the preferred mobile flow.
+ const staffStatus=document.getElementById("staffLoginStatus");
+ if(status)status.textContent="⏳ Google Login ဖွင့်နေပါတယ်…";
+ // Vercel-hosted apps work more reliably with popup because Firebase redirect
+ // can be affected by third-party storage restrictions on non-Firebase hosts.
  try{
-   await signInWithRedirect(auth,provider);
+   const result=await signInWithPopup(auth,provider);
+   await handlePdkAuthUser(result.user);
    return;
  }catch(e){
-   ownerLoginBusy=false;
    const code=e?.code||"error";
+   const detail=String(e?.message||"").replace(/^FirebaseError:\s*/i,"").slice(0,180);
+   // Do not silently redirect back to the login screen. Show the real error
+   // so the Owner can open the site in Chrome when a popup is blocked.
+   ownerLoginBusy=false;
    if(modal)modal.classList.add("show");
-   if(status)status.textContent="Google Login error: "+code;
-   const staffStatus=document.getElementById("staffLoginStatus");
-   if(staffStatus)staffStatus.textContent="Google Login မဖွင့်နိုင်ပါ: "+code;
-   setUI("warn","Google sign-in failed: "+code);
+   const msg="Google Login error: "+code+(detail?" · "+detail:"");
+   if(status)status.textContent=msg;
+   if(staffStatus)staffStatus.textContent="❌ "+msg;
+   if(code==="auth/popup-blocked"||code==="auth/operation-not-supported-in-this-environment"){
+     setUI("warn","Google Login ကို Chrome မှာဖွင့်ပြီး ထပ်စမ်းပါ။");
+   }else if(code==="auth/unauthorized-domain"){
+     setUI("warn","Firebase Authorized Domains ထဲမှာ ဒီ Website domain ("+location.hostname+") ကိုထည့်ရန်လိုပါတယ်။");
+   }else{
+     setUI("warn",msg);
+   }
    showToast("Google Login: "+code);
-   console.error("PDK owner redirect login error",e);
+   console.error("PDK owner popup login error",e);
  }
 };
 getRedirectResult(auth).then(result=>{
