@@ -18,13 +18,13 @@
     {
       "src": "/icons/pdk-logo.svg?v=5",
       "sizes": "192x192",
-      "type": "image/webp",
+      "type": "image/svg+xml",
       "purpose": "any"
     },
     {
       "src": "/icons/pdk-logo.svg?v=5",
       "sizes": "512x512",
-      "type": "image/webp",
+      "type": "image/svg+xml",
       "purpose": "maskable"
     }
   ]
