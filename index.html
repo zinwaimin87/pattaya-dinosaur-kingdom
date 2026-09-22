@@ -351,7 +351,18 @@ getRedirectResult(auth).then(result=>{
   if(result?.user) return handlePdkAuthUser(result.user);
 }).catch(e=>{
   const code=e?.code||"redirect-error";
-  setUI("warn","Google redirect failed: "+code);
+  const detail=String(e?.message||"").replace(/^FirebaseError:\s*/i,"").slice(0,180);
+  const staffStatus=document.getElementById("staffLoginStatus");
+  const ownerStatus=document.getElementById("ownerGmailStatus");
+  if(staffStatus)staffStatus.textContent="❌ Google Login Error: "+code+(detail?" · "+detail:"");
+  if(ownerStatus)ownerStatus.textContent="❌ Google Login Error: "+code+(detail?" · "+detail:"");
+  if(code==="auth/unauthorized-domain"){
+    setUI("warn","ဒီ Website domain ကို Firebase Authorized Domains ထဲထည့်ရန်လိုပါတယ်: "+location.hostname);
+  }else if(code==="auth/operation-not-supported-in-this-environment"){
+    setUI("warn","ဒီ Browser environment မှာ Google Login မထောက်ပံ့ပါ။ Chrome မှာ Link ကိုဖွင့်ပြီး ထပ်စမ်းပါ။");
+  }else{
+    setUI("warn","Google redirect failed: "+code+(detail?" · "+detail:""));
+  }
   showToast("Google Login: "+code);
   console.error("PDK owner redirect error",e);
 });
