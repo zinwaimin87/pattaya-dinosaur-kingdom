@@ -185,7 +185,8 @@ body.access-pending .staff-session-bar{display:none}
     }catch(_){}
     if(status)status.textContent='⏳ Google Login ဖွင့်နေပါတယ်…';
     if(window.pdkFirebaseLogin){
-      setTimeout(()=>{window.pdkCloseOwnerGmail();window.pdkFirebaseLogin()},120);
+      window.pdkCloseOwnerGmail();
+      window.pdkFirebaseLogin();
       return false;
     }
     if(status)status.textContent='⏳ Owner Login service ကို load လုပ်နေပါတယ်…';
@@ -271,7 +272,7 @@ const firebaseConfig={apiKey:"AIzaSyCYTmPcPeMNAFUS9x34CneBOlwRwDPujdY",authDomai
 const firebaseApp=initializeApp(firebaseConfig),auth=getAuth(firebaseApp),db=getFirestore(firebaseApp),provider=new GoogleAuthProvider();window.pdkAuth=auth;window.pdkDb=db;
 let started=false,busy=false;
 const el=id=>document.getElementById(id);
-function ownerEmail(){try{const saved=String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase();return saved||"1987zinwaimin@gmail.com"}catch{return "1987zinwaimin@gmail.com"}}
+function ownerEmail(){return "1987zinwaimin@gmail.com"}
 window.pdkOwnerEmail=ownerEmail;
 function setUI(state,msg,user){
   const dot=el("firebaseDot"),status=el("firebaseStatus"),login=el("firebaseLoginBtn"),logout=el("firebaseLogoutBtn"),box=el("firebaseUser");
@@ -317,13 +318,8 @@ window.pdkFirebaseLogin=async()=>{
  if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}
  try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(e){}
  setUI("","Opening Owner Google Login…");
- const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||"");
  try{
-   // Mobile browsers are more reliable with Firebase's full-page redirect flow.
-   if(isMobile){
-     await signInWithRedirect(auth,provider);
-     return;
-   }
+   // Start with popup directly from the user gesture; fall back to redirect if blocked.
    await signInWithPopup(auth,provider);
  }catch(e){
    const code=e?.code||"error";
