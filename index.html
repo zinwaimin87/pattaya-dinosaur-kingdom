@@ -201,7 +201,7 @@ body.access-pending .staff-session-bar{display:none}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp, onSnapshot, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 window.pdkFirebaseFns={doc,getDoc,setDoc,onSnapshot,collection,deleteDoc,signInAnonymously,signInWithRedirect,signOut};
 const firebaseConfig={apiKey:"AIzaSyCYTmPcPeMNAFUS9x34CneBOlwRwDPujdY",authDomain:"pattaya-dinosaur-kingdom-7314c.firebaseapp.com",projectId:"pattaya-dinosaur-kingdom-7314c",storageBucket:"pattaya-dinosaur-kingdom-7314c.firebasestorage.app",messagingSenderId:"239503411474",appId:"1:239503411474:web:575eb1c41258a36f730bcb"};
@@ -230,7 +230,7 @@ async function cloudLoad(user){
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
 window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Please sign in to continue.");window.pdkStaffAuthReady?.(null);return}if(user.isAnonymous){setUI("ok","Staff session connected.");if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(user);return}const expected=ownerEmail();if(!expected||!user.email||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user);if(window.pdkOwnerReady)window.pdkOwnerReady(user);document.body.classList.remove('staff-gated','access-pending');closeStaffLogin();})};
-window.pdkFirebaseLogin=async()=>{const expected=ownerEmail();if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}try{await signInWithRedirect(auth,provider)}catch(e){setUI("warn","Google sign-in failed: "+(e.code||"error"));const msg=(e.code||"failed")+((e.message||"").slice(0,90)?" · "+e.message.slice(0,90):"");showToast("Google Login: "+msg)}};
+window.pdkFirebaseLogin=async()=>{const expected=ownerEmail();if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}setUI("","Opening Google Login…");try{await signInWithPopup(auth,provider)}catch(e){const code=e?.code||"error";if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){try{await signInWithRedirect(auth,provider);return}catch(re){const rcode=re?.code||"redirect-error";setUI("warn","Google sign-in failed: "+rcode);showToast("Google Login: "+rcode);return}}setUI("warn","Google sign-in failed: "+code);const msg=code+((e?.message||"").slice(0,120)?" · "+e.message.slice(0,120):"");showToast("Google Login: "+msg);console.error("PDK owner login error",e)}};getRedirectResult(auth).catch(e=>{const code=e?.code||"redirect-error";setUI("warn","Google redirect failed: "+code);showToast("Google Login: "+code);console.error("PDK owner redirect error",e)});
 window.pdkFirebaseLogout=()=>signOut(auth);
 window.pdkFirebaseSyncNow=async()=>{if(!auth.currentUser){showToast(current==="my"?"Google Login အရင်ဝင်ပါ":"Sign in with Google first");return}if(await cloudSave())showToast(current==="my"?"Firebase Sync ပြီးပါပြီ":"Firebase sync completed")};
 window.pdkFirebaseQueueSync=()=>{clearTimeout(window.__pdkCloudTimer);window.__pdkCloudTimer=setTimeout(()=>cloudSave(),900)};
@@ -414,7 +414,9 @@ async function staffLogin(){
   if(status){
     if(code==='auth/operation-not-allowed') status.textContent='❌ Firebase Anonymous Login ပိတ်ထားပါတယ်။ Firebase Console → Authentication → Sign-in method → Anonymous ကို ON လုပ်ပါ။';
     else if(code==='permission-denied') status.textContent='❌ Staff account access ကို Firestore Rules က ပိတ်ထားပါတယ်။';
-    else status.textContent='❌ Login failed: '+code;
+    else if(code==='auth/network-request-failed') status.textContent='❌ Internet/Firebase connection မရပါ။ Wi‑Fi/Data ပြန်စစ်ပြီး ထပ်နှိပ်ပါ။';
+    else if(code==='auth/too-many-requests') status.textContent='❌ Login attempts များလွန်းပါတယ်။ ခဏစောင့်ပြီး ထပ်စမ်းပါ။';
+    else status.textContent='❌ Login failed: '+code+' · '+detail;
   }
   showToast('Staff Login failed: '+code+(detail?' · '+detail:''));
   console.error('PDK staff login error',e);
