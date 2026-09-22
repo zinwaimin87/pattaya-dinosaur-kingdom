@@ -29,6 +29,7 @@ service cloud.firestore {
 
     match /staffAccess/state {
       allow read: if isOwner() || activeStaff();
+
       allow create, update, delete: if isOwner() || (
         activeStaff() &&
         (
@@ -41,13 +42,28 @@ service cloud.firestore {
     }
 
     match /staffAccessUsers/{staffUid} {
+      // Owner can see and manage every staff account.
       allow read: if isOwner() || (request.auth != null && request.auth.uid == staffUid);
+
+      // A new anonymous staff device can create its own account and is active immediately.
       allow create: if isAnon()
         && request.auth.uid == staffUid
         && request.resource.data.name is string
         && request.resource.data.role in ['sale','entry','customer','event']
-        && request.resource.data.active == false;
-      allow update, delete: if isOwner();
+        && request.resource.data.active == true;
+
+      // Staff can update only their own login metadata. They cannot change role,
+      // permissions, or active/disabled state.
+      allow update: if isOwner() || (
+        isAnon()
+        && request.auth.uid == staffUid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'lastLoginAt',
+          'lastLoginDevice'
+        ])
+      );
+
+      allow delete: if isOwner();
     }
 
     match /{document=**} {
