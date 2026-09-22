@@ -10,10 +10,10 @@
   "theme_color": "#061b2f",
   "icons": [
     {
-      "src": "/icons/pdk-logo.svg",
-      "sizes": "48x48 192x192 512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "/icons/pdk-logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ]
 }
