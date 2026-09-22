@@ -37,9 +37,9 @@ body.staff-gated .staff-login{display:flex}
 body.access-pending .top,body.access-pending .main,body.access-pending .bottom{visibility:hidden;pointer-events:none}
 body.access-pending .staff-login{display:flex}
 body.access-pending .staff-session-bar{display:none}
-.staff-login{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 18% 12%,rgba(32,217,255,.24),transparent 32%),radial-gradient(circle at 82% 88%,rgba(255,66,181,.24),transparent 36%),linear-gradient(135deg,#dfe7ef 0%,#c8d2dd 48%,#e9eef3 100%);backdrop-filter:blur(16px)}
+.staff-login{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;pointer-events:auto;touch-action:manipulation;isolation:isolate;background:radial-gradient(circle at 18% 12%,rgba(32,217,255,.24),transparent 32%),radial-gradient(circle at 82% 88%,rgba(255,66,181,.24),transparent 36%),linear-gradient(135deg,#dfe7ef 0%,#c8d2dd 48%,#e9eef3 100%);backdrop-filter:blur(16px)}
 .staff-login.show{display:flex}.staff-login-card{width:min(520px,100%);padding:26px 22px 24px;border-radius:34px;border:1px solid rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(238,244,249,.97),rgba(205,215,225,.97));box-shadow:18px 18px 45px rgba(53,70,87,.30),-14px -14px 35px rgba(255,255,255,.82),inset 1px 1px 0 rgba(255,255,255,.9);position:relative;overflow:hidden;pointer-events:auto;z-index:1}
-.staff-login-card:before{content:"";position:absolute;width:190px;height:190px;right:-75px;top:-75px;border-radius:50%;background:radial-gradient(circle,rgba(32,217,255,.25),transparent 70%);animation:staffFloat 5s ease-in-out infinite}.staff-login-card:after{content:"🦖";position:absolute;right:-20px;bottom:-55px;font-size:150px;opacity:.08;transform:rotate(-12deg);pointer-events:none}
+.staff-login-card:before{content:"";position:absolute;width:190px;height:190px;right:-75px;top:-75px;border-radius:50%;background:radial-gradient(circle,rgba(32,217,255,.25),transparent 70%);animation:staffFloat 5s ease-in-out infinite;pointer-events:none}.staff-login-card:after{content:"🦖";position:absolute;right:-20px;bottom:-55px;font-size:150px;opacity:.08;transform:rotate(-12deg);pointer-events:none}
 .staff-login-top{text-align:center;position:relative;z-index:1}.staff-login-logo{width:92px;height:92px;margin:0 auto 13px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:linear-gradient(145deg,#edf3f8,#c8d2dc);color:#253447;box-shadow:14px 14px 28px rgba(76,93,110,.28),-12px -12px 24px rgba(255,255,255,.9),inset 1px 1px 3px rgba(255,255,255,.95);animation:staffLogo 3s ease-in-out infinite}.staff-login-top h2{margin:0;color:#263548;font-size:27px;letter-spacing:.16em;text-shadow:1px 1px 0 #fff,-1px -1px 0 rgba(99,116,134,.15)}.staff-login-top p{margin:8px 0 19px;color:#607286;font-size:12px;line-height:1.55}
 .staff-login-form{position:relative;z-index:1;display:grid;gap:12px}.staff-field-label{color:#44576a;font-size:11px;font-weight:900;letter-spacing:.08em;margin:0 4px -4px}.staff-login-form input{width:100%;border:0;background:linear-gradient(145deg,#d3dde6,#eef3f7);color:#263548;border-radius:18px;padding:15px 16px;outline:none;font:700 14px inherit;box-shadow:inset 5px 5px 10px rgba(91,108,125,.18),inset -5px -5px 10px rgba(255,255,255,.9),0 2px 3px rgba(255,255,255,.55)}.staff-login-form input::placeholder{color:#8493a3}.staff-login-form input:focus{box-shadow:inset 4px 4px 9px rgba(91,108,125,.16),inset -5px -5px 10px rgba(255,255,255,.9),0 0 0 3px rgba(32,217,255,.20)}
 .staff-role-title{color:#44576a;font-size:11px;font-weight:900;letter-spacing:.08em;margin:3px 4px -2px}.staff-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.staff-role{border:0;border-radius:18px;padding:13px;background:linear-gradient(145deg,#e9eff4,#cfd9e2);cursor:pointer;color:#33465a;text-align:left;box-shadow:6px 6px 12px rgba(81,98,115,.18),-6px -6px 12px rgba(255,255,255,.8);transition:.18s}.staff-role:active{transform:translateY(1px)}.staff-role.selected{color:#072235;background:linear-gradient(135deg,#8df0ff,#b8f5ff 45%,#ffb3df);box-shadow:inset 3px 3px 8px rgba(32,99,120,.14),inset -4px -4px 8px rgba(255,255,255,.55),0 0 0 2px rgba(32,217,255,.28),0 8px 18px rgba(32,217,255,.16)}.staff-role b{display:block;font-size:12px}.staff-role span{display:block;color:#6f8193;font-size:10px;margin-top:4px;line-height:1.35}.staff-role.selected span{color:#31576a}
@@ -138,13 +138,36 @@ body.access-pending .staff-session-bar{display:none}
         <button type="button" class="staff-role" data-role="event" onclick="selectStaffRole('event')"><b>🦖 Event Staff</b><span>Event schedule & event work</span></button>
       </div>
       <div class="staff-login-actions">
-        <button class="btn staff-signin-btn" onclick="staffLogin()">🔐 SIGN IN</button>
-        <button class="btn staff-owner-btn" onclick="ownerLoginFromStaff()">👑 Owner Login</button>
+        <button type="button" id="staffSignInBtn" class="btn staff-signin-btn">🔐 SIGN IN</button>
+        <button type="button" id="ownerLoginBtn" class="btn staff-owner-btn">👑 Owner Login</button>
       </div>
       <div class="staff-login-status" id="staffLoginStatus">Owner can change your permissions anytime.</div>
     </div>
   </div>
 </div>
+<script>
+(function(){
+  function bindStaffLoginButtons(){
+    const gate=document.getElementById('staffLogin');
+    if(!gate||gate.dataset.bound==='1')return;
+    gate.dataset.bound='1';
+    gate.addEventListener('click',function(e){
+      const btn=e.target.closest?.('#staffSignInBtn,#ownerLoginBtn');
+      if(!btn)return;
+      e.preventDefault();
+      e.stopPropagation();
+      if(btn.id==='staffSignInBtn'){
+        if(typeof window.staffLogin==='function')window.staffLogin();
+        else { const s=document.getElementById('staffLoginStatus'); if(s)s.textContent='Loading login service…'; }
+      }else{
+        if(typeof window.ownerLoginFromStaff==='function')window.ownerLoginFromStaff();
+        else { const s=document.getElementById('staffLoginStatus'); if(s)s.textContent='Loading Owner Login…'; }
+      }
+    },true);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindStaffLoginButtons);else bindStaffLoginButtons();
+})();
+</script>
 <div class="staff-session-bar" id="staffSessionBar"><span class="staff-session-dot"></span><span id="staffSessionText">Staff</span><button onclick="staffLogout()" title="Logout">×</button></div>
 <div class="modal" id="eventModal" onclick="if(event.target===this)closeEventModal()"><div class="modal-card"><div class="modal-head"><div><h3>DINO MEET &amp; GREET</h3><div class="help">Set a different number of show times for each day. Monday can have 3 times, Saturday can have 5 times, etc.</div></div><button class="close" onclick="closeEventModal()">×</button></div><div class="full"><label>Weekly Schedule</label><div id="eventDayScheduleEditor" class="day-schedule-editor"></div></div><div class="hero-actions"><button class="btn" onclick="saveEventSchedule()">Save Schedule</button><button class="btn secondary" onclick="closeEventModal()">Cancel</button></div></div></div><div class="modal" id="ticketModal" onclick="if(event.target===this)closeTicketModal()"><div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add Ticket</h3><div class="help">Upload a ticket image from your phone. The image will automatically fit the full area without cropping.</div></div><button class="close" onclick="closeTicketModal()">×</button></div><div class="upload-box"><div class="upload-preview" id="uploadPreview"><span>🎟️</span></div><label class="file-label">📷 Choose ticket image<input id="ticketImageInput" type="file" accept="image/*"></label><div class="help">JPG / PNG / WEBP • Full image shown with “contain” so the original picture is not cut off.</div></div><div class="form-grid form"><div><label id="modalNameLabel">Ticket Name</label><input id="modalName" placeholder="Adult Ticket"></div><div><label id="modalPriceLabel">Price (THB)</label><input id="modalPrice" type="number" min="0" step="1" placeholder="600"></div><div><label id="modalQtyLabel">Quantity</label><input id="modalQty" type="number" min="0" step="1" value="0" placeholder="0"></div><div><label id="modalTypeLabel">Type</label><select id="modalType"><option value="adult">Adult</option><option value="child">Child</option><option value="family">Family</option></select></div><div><label id="modalCategoryLabel">Category</label><select id="modalCategory"><option value="sale">Sale Ticket</option><option value="entry">Entry Ticket</option><option value="playing">Playing Ticket</option></select></div><div class="full"><label id="modalDescLabel">Description</label><input id="modalDesc" placeholder="Ticket description"></div></div><div class="hero-actions"><button class="btn" onclick="saveTicket()" id="modalSave">Save Ticket</button><button class="btn secondary" onclick="closeTicketModal()">Cancel</button></div></div></div><nav class="bottom"><div class="nav"><button class="active" data-page="home"><span class="icon">⌂</span><span id="navHome">Home</span></button><button data-page="tickets"><span class="icon">🎟️</span><span id="navTickets">Tickets</span></button><button data-page="events"><span class="icon">🦖</span><span id="navEvents">Events</span></button><button data-page="saleTicket"><span class="icon">🧾</span><span id="navSales">Sale</span></button><button data-page="language"><span class="icon">文</span><span id="navLanguage">Language</span></button><button data-page="settings"><span class="icon">⚙️</span><span id="navSetting">Setting</span></button></div></nav>
 <div id="toast" class="toast"></div>
@@ -308,6 +331,7 @@ function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staff
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
 function ownerLoginFromStaff(){
   const status=el('staffLoginStatus');
+  if(!window.pdkFirebaseLogin){if(status)status.textContent='⏳ Owner Login service ကို load လုပ်နေပါတယ်။';return;}
   if(status)status.textContent='👑 Opening Owner Google Login…';
   // Keep the gate open until Firebase confirms the exact Owner Gmail.
   // Start directly from the button click so mobile browsers keep the user gesture.
@@ -315,6 +339,9 @@ function ownerLoginFromStaff(){
 }
 async function staffLogin(){
  const name=el('staffNameInput')?.value.trim();
+ if(!window.pdkFirebaseFns?.signInAnonymously){
+   const status=el('staffLoginStatus');if(status)status.textContent='⏳ Firebase Login ကို load လုပ်နေပါတယ်။ ၂ စက္ကန့်စောင့်ပြီး ထပ်နှိပ်ပါ။';showToast('Firebase Login loading');return;
+ }
  const status=el('staffLoginStatus');
  if(!name){if(status)status.textContent='Please enter your username.';showToast('Username ထည့်ပါ');return}
  if(status)status.textContent='Signing in…';
