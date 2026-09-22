@@ -170,9 +170,9 @@ body.access-pending .staff-session-bar{display:none}
   window.pdkSubmitOwnerGmail=function(){
     const input=document.getElementById('ownerGmailInput');
     const status=document.getElementById('ownerGmailStatus');
-    const email=String(input?.value||'').replace(/[\\u200B-\\u200D\\uFEFF]/g,'').trim().toLowerCase();
+    const email=String(input?.value||'').replace(/[\u200B-\u200D\uFEFF]/g,'').trim().toLowerCase();
     if(input)input.value=email;
-    const validEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+    const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if(!validEmail){
       if(status)status.textContent='Valid Gmail address ထည့်ပါ။';
       input?.focus();
