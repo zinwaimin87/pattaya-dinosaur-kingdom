@@ -38,7 +38,7 @@ body.access-pending .top,body.access-pending .main,body.access-pending .bottom{v
 body.access-pending .staff-login{display:flex}
 body.access-pending .staff-session-bar{display:none}
 .staff-login{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 18% 12%,rgba(32,217,255,.24),transparent 32%),radial-gradient(circle at 82% 88%,rgba(255,66,181,.24),transparent 36%),linear-gradient(135deg,#dfe7ef 0%,#c8d2dd 48%,#e9eef3 100%);backdrop-filter:blur(16px)}
-.staff-login.show{display:flex}.staff-login-card{width:min(520px,100%);padding:26px 22px 24px;border-radius:34px;border:1px solid rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(238,244,249,.97),rgba(205,215,225,.97));box-shadow:18px 18px 45px rgba(53,70,87,.30),-14px -14px 35px rgba(255,255,255,.82),inset 1px 1px 0 rgba(255,255,255,.9);position:relative;overflow:hidden}
+.staff-login.show{display:flex}.staff-login-card{width:min(520px,100%);padding:26px 22px 24px;border-radius:34px;border:1px solid rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(238,244,249,.97),rgba(205,215,225,.97));box-shadow:18px 18px 45px rgba(53,70,87,.30),-14px -14px 35px rgba(255,255,255,.82),inset 1px 1px 0 rgba(255,255,255,.9);position:relative;overflow:hidden;pointer-events:auto;z-index:1}
 .staff-login-card:before{content:"";position:absolute;width:190px;height:190px;right:-75px;top:-75px;border-radius:50%;background:radial-gradient(circle,rgba(32,217,255,.25),transparent 70%);animation:staffFloat 5s ease-in-out infinite}.staff-login-card:after{content:"🦖";position:absolute;right:-20px;bottom:-55px;font-size:150px;opacity:.08;transform:rotate(-12deg)}
 .staff-login-top{text-align:center;position:relative;z-index:1}.staff-login-logo{width:92px;height:92px;margin:0 auto 13px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:linear-gradient(145deg,#edf3f8,#c8d2dc);color:#253447;box-shadow:14px 14px 28px rgba(76,93,110,.28),-12px -12px 24px rgba(255,255,255,.9),inset 1px 1px 3px rgba(255,255,255,.95);animation:staffLogo 3s ease-in-out infinite}.staff-login-top h2{margin:0;color:#263548;font-size:27px;letter-spacing:.16em;text-shadow:1px 1px 0 #fff,-1px -1px 0 rgba(99,116,134,.15)}.staff-login-top p{margin:8px 0 19px;color:#607286;font-size:12px;line-height:1.55}
 .staff-login-form{position:relative;z-index:1;display:grid;gap:12px}.staff-field-label{color:#44576a;font-size:11px;font-weight:900;letter-spacing:.08em;margin:0 4px -4px}.staff-login-form input{width:100%;border:0;background:linear-gradient(145deg,#d3dde6,#eef3f7);color:#263548;border-radius:18px;padding:15px 16px;outline:none;font:700 14px inherit;box-shadow:inset 5px 5px 10px rgba(91,108,125,.18),inset -5px -5px 10px rgba(255,255,255,.9),0 2px 3px rgba(255,255,255,.55)}.staff-login-form input::placeholder{color:#8493a3}.staff-login-form input:focus{box-shadow:inset 4px 4px 9px rgba(91,108,125,.16),inset -5px -5px 10px rgba(255,255,255,.9),0 0 0 3px rgba(32,217,255,.20)}
@@ -159,7 +159,7 @@ const firebaseConfig={apiKey:"AIzaSyCYTmPcPeMNAFUS9x34CneBOlwRwDPujdY",authDomai
 const firebaseApp=initializeApp(firebaseConfig),auth=getAuth(firebaseApp),db=getFirestore(firebaseApp),provider=new GoogleAuthProvider();window.pdkAuth=auth;window.pdkDb=db;
 let started=false,busy=false;
 const el=id=>document.getElementById(id);
-function ownerEmail(){try{return String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase()}catch{return ""}}
+function ownerEmail(){try{const saved=String(JSON.parse(localStorage.getItem("pdkFounderData")||"{}").ownerGmail||"").trim().toLowerCase();return saved||"1987zinwaimin@gmail.com"}catch{return "1987zinwaimin@gmail.com"}}
 window.pdkOwnerEmail=ownerEmail;
 function setUI(state,msg,user){
   const dot=el("firebaseDot"),status=el("firebaseStatus"),login=el("firebaseLoginBtn"),logout=el("firebaseLogoutBtn"),box=el("firebaseUser");
@@ -180,7 +180,7 @@ async function cloudLoad(user){
   try{const snap=await getDoc(doc(db,"owners",user.uid,"app","state"));if(!snap.exists()){await cloudSave();return true}const d=snap.data()||{};if(window.pdkApplyCloudState)window.pdkApplyCloudState(d);setUI("ok","Cloud data loaded successfully.",user);return true}
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
-window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Please sign in to continue.");window.pdkStaffAuthReady?.(null);return}if(user.isAnonymous){setUI("ok","Staff session connected.");if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(user);return}const expected=ownerEmail();if(!expected||!user.email||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user);if(window.pdkOwnerReady)window.pdkOwnerReady(user)})};
+window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Please sign in to continue.");window.pdkStaffAuthReady?.(null);return}if(user.isAnonymous){setUI("ok","Staff session connected.");if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(user);return}const expected=ownerEmail();if(!expected||!user.email||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user);if(window.pdkOwnerReady)window.pdkOwnerReady(user);document.body.classList.remove('staff-gated','access-pending');closeStaffLogin();})};
 window.pdkFirebaseLogin=async()=>{const expected=ownerEmail();if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}try{const r=await signInWithPopup(auth,provider);if(r.user.email.toLowerCase()!==expected){await signOut(auth);showToast(current==="my"?"Owner Gmail မကိုက်ညီပါ":"This Google account does not match Owner Gmail")}}catch(e){setUI("warn","Google sign-in failed: "+(e.code||"error"));showToast("Google Login: "+(e.code||"failed"))}};
 window.pdkFirebaseLogout=()=>signOut(auth);
 window.pdkFirebaseSyncNow=async()=>{if(!auth.currentUser){showToast(current==="my"?"Google Login အရင်ဝင်ပါ":"Sign in with Google first");return}if(await cloudSave())showToast(current==="my"?"Firebase Sync ပြီးပါပြီ":"Firebase sync completed")};
@@ -307,8 +307,10 @@ async function staffLoadSharedState(){try{const s=await window.pdkFirebaseFns.ge
 function startStaffRealtime(){if(staffUnsub)staffUnsub();if(staffPermUnsub)staffPermUnsub();if(!window.pdkAuth.currentUser?.isAnonymous)return;const uid=window.pdkAuth.currentUser.uid;staffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','state'),s=>{if(s.exists())window.pdkApplyCloudState?.(s.data());renderStaffSession();applyStaffUI()},e=>console.warn('staff state listener',e));staffPermUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccess','users',uid),s=>{if(!s.exists()){staffProfile=null;renderStaffSession();openStaffLogin();return}staffProfile={id:uid,...s.data()};renderStaffSession();applyStaffUI();applyStaffControlVisibility();if(!staffProfile.active)showToast('Owner has disabled this staff account')},e=>console.warn('staff permission listener',e))}
 function startOwnerStaffRealtime(){if(ownerStaffUnsub)ownerStaffUnsub();if(!isOwnerUser())return;ownerStaffUnsub=window.pdkFirebaseFns.onSnapshot(window.pdkFirebaseFns.collection(window.pdkDb,'staffAccess','users'),s=>{window.pdkStaffDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderStaffManagement()},e=>console.warn(e))}
 function ownerLoginFromStaff(){
-  closeStaffLogin();
-  // Start Google sign-in directly from the button click so mobile browsers do not block the popup.
+  const status=el('staffLoginStatus');
+  if(status)status.textContent='👑 Opening Owner Google Login…';
+  // Keep the gate open until Firebase confirms the exact Owner Gmail.
+  // Start directly from the button click so mobile browsers keep the user gesture.
   window.pdkFirebaseLogin?.();
 }
 async function staffLogin(){
@@ -355,10 +357,22 @@ async function staffLogin(){
 function closeStaffLogin(){el('staffLogin')?.classList.remove('show')}
 function openStaffLogin(){el('staffLogin')?.classList.add('show');el('staffNameInput')?.focus()}
 async function staffLogout(){try{if(staffUnsub){staffUnsub();staffUnsub=null}if(staffPermUnsub){staffPermUnsub();staffPermUnsub=null}localStorage.removeItem('pdkStaffSession');staffProfile=null;await window.pdkFirebaseFns.signOut(window.pdkAuth);renderStaffSession();const st=el('staffLoginStatus');if(st)st.textContent='Signed out. Please sign in again.';openStaffLogin()}catch(e){}}
+document.addEventListener('click',e=>{
+  const owner=isOwnerUser(),staff=!!staffProfile&&!owner;
+  if(staff){
+    const ownerOnly=e.target.closest?.('[data-owner-only="true"],#staffManagementCard');
+    if(ownerOnly){e.preventDefault();e.stopPropagation();showToast('Owner only');return}
+  }
+},true);
 function renderStaffSession(){const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
 function applyStaffUI(){
  const owner=isOwnerUser(),staff=!!staffProfile&&!owner,guest=!owner&&!staff;
  document.body.classList.remove('access-pending');
+ document.body.classList.toggle('owner-mode',owner);
+ document.body.classList.toggle('staff-mode',staff);
+ document.querySelectorAll('.nav button[data-page="settings"]').forEach(x=>x.style.display=owner?'':'none');
+ document.querySelectorAll('#firebaseLoginBtn,#firebaseSyncBtn,#firebaseLogoutBtn').forEach(x=>x.style.display=owner?'':'none');
+ document.querySelectorAll('[data-owner-only="true"]').forEach(x=>x.style.display=owner?'':'none');
  const mg=el('staffManagementCard');if(mg)mg.style.display=owner?'block':'none';
  document.body.classList.toggle('staff-gated',guest||staff&&!staffProfile.active);
  if(guest||staff&&!staffProfile.active){
