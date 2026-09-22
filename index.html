@@ -5,6 +5,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#061b2f" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" type="image/svg+xml" href="/icons/pdk-logo.svg" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Pattaya Dinosaur Kingdom" />
 <title>Pattaya Dinosaur Kingdom</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap');
@@ -431,4 +437,9 @@ const originalConfirm=window.confirmCategory;window.confirmCategory=function(cat
 const originalGo=window.go;window.go=function(page){if(staffProfile&&!isOwnerUser()){if(page==='settings'){showToast('Staff cannot open Owner Settings');return}if(page==='events'&&!staffCan('viewEvents')){showToast('Owner has disabled Event access');return}if(['tickets','saleTicket','entryTicket','playingTicket'].includes(page)&&!staffCan('viewTickets')){showToast('Owner has disabled Ticket access');return}}return originalGo.apply(this,arguments)};
 </script>
 <!-- PDK-SETTING-NAV-V3: Settings navigation is included in the production UI. -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+}
+</script>
 </body></html>
