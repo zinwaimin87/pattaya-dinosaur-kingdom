@@ -149,9 +149,60 @@ body.access-pending .staff-session-bar{display:none}
     },200);
     return false;
   };
-  window.pdkDirectOwnerLogin=function(){
-    window.pdkOpenOwnerGmail();
+  window.pdkOpenOwnerGmail=function(){
+    const modal=document.getElementById('ownerGmailModal');
+    const input=document.getElementById('ownerGmailInput');
+    const status=document.getElementById('ownerGmailStatus');
+    if(!modal)return false;
+    let saved='';
+    try{saved=String(JSON.parse(localStorage.getItem('pdkFounderData')||'{}').ownerGmail||'').trim()}catch(_){}
+    if(input && !input.value && saved)input.value=saved;
+    if(status)status.textContent='';
+    modal.classList.add('show');
+    setTimeout(()=>{try{input?.focus();input?.select()}catch(_){}},80);
     return false;
+  };
+  window.pdkCloseOwnerGmail=function(){
+    const modal=document.getElementById('ownerGmailModal');
+    if(modal)modal.classList.remove('show');
+    return false;
+  };
+  window.pdkSubmitOwnerGmail=function(){
+    const input=document.getElementById('ownerGmailInput');
+    const status=document.getElementById('ownerGmailStatus');
+    const email=String(input?.value||'').trim().toLowerCase();
+    if(!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){
+      if(status)status.textContent='Valid Gmail address ထည့်ပါ။';
+      input?.focus();
+      return false;
+    }
+    try{
+      const data=JSON.parse(localStorage.getItem('pdkFounderData')||'{}');
+      data.ownerGmail=email;
+      localStorage.setItem('pdkFounderData',JSON.stringify(data));
+    }catch(_){}
+    if(status)status.textContent='⏳ Google Login ဖွင့်နေပါတယ်…';
+    if(window.pdkFirebaseLogin){
+      setTimeout(()=>{window.pdkCloseOwnerGmail();window.pdkFirebaseLogin()},120);
+      return false;
+    }
+    if(status)status.textContent='⏳ Owner Login service ကို load လုပ်နေပါတယ်…';
+    let tries=0;
+    const timer=setInterval(()=>{
+      tries++;
+      if(window.pdkFirebaseLogin){
+        clearInterval(timer);
+        window.pdkCloseOwnerGmail();
+        window.pdkFirebaseLogin();
+      }else if(tries>=30){
+        clearInterval(timer);
+        if(status)status.textContent='Owner Login service မတက်လာသေးပါ။ Page ကို Refresh လုပ်ပါ။';
+      }
+    },200);
+    return false;
+  };
+  window.pdkDirectOwnerLogin=function(){
+    return window.pdkOpenOwnerGmail();
   };
 })();
 </script>
