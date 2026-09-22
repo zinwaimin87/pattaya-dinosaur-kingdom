@@ -341,23 +341,12 @@ window.pdkFirebaseLogin=async()=>{
    if(auth.currentUser?.isAnonymous){
      await signOut(auth);
    }
-   // Use popup first so mobile browsers complete the Owner session in the same page.
-   await signInWithPopup(auth,provider);
+   // Redirect is the reliable Firebase OAuth flow on mobile/in-app browsers.
+   // Firebase recommends redirect on mobile devices.
+   await signInWithRedirect(auth,provider);
+   return;
  }catch(e){
    const code=e?.code||"error";
-   if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){
-     try{
-       await signInWithRedirect(auth,provider);
-       return;
-     }catch(re){
-       const rcode=re?.code||"redirect-error";
-       ownerLoginBusy=false;
-       setUI("warn","Google sign-in failed: "+rcode);
-       showToast("Google Login: "+rcode);
-       console.error("PDK owner redirect error",re);
-       return;
-     }
-   }
    ownerLoginBusy=false;
    setUI("warn","Google sign-in failed: "+code);
    const msg=code+((e?.message||"").slice(0,160)?" · "+e.message.slice(0,160):"");
@@ -509,6 +498,23 @@ window.pdkFinalizeOwnerMode=()=>{
   if(typeof staffPermUnsub!=='undefined'&&staffPermUnsub){staffPermUnsub();staffPermUnsub=null}
   renderStaffSession();
   applyStaffUI();
+};
+window.pdkPrepareOwnerLogin=()=>{
+  localStorage.removeItem('pdkStaffSession');
+  if(typeof staffProfile!=='undefined')staffProfile=null;
+  if(typeof staffUnsub!=='undefined'&&staffUnsub){staffUnsub();staffUnsub=null}
+  if(typeof staffPermUnsub!=='undefined'&&staffPermUnsub){staffPermUnsub();staffPermUnsub=null}
+  renderStaffSession();
+  applyStaffUI();
+};
+window.pdkFinalizeOwnerMode=()=>{
+  localStorage.removeItem('pdkStaffSession');
+  if(typeof staffProfile!=='undefined')staffProfile=null;
+  if(typeof staffUnsub!=='undefined'&&staffUnsub){staffUnsub();staffUnsub=null}
+  if(typeof staffPermUnsub!=='undefined'&&staffPermUnsub){staffPermUnsub();staffPermUnsub=null}
+  renderStaffSession();
+  applyStaffUI();
+  startOwnerStaffRealtime();
 };
 function isOwnerUser(){const u=window.pdkAuth?.currentUser;const expected=window.pdkOwnerEmail?.()||"";return !!u&&!u.isAnonymous&&u.email&&expected&&u.email.toLowerCase()===expected}
 async function staffEnsureAuth(){
