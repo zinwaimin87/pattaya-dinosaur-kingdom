@@ -170,8 +170,10 @@ body.access-pending .staff-session-bar{display:none}
   window.pdkSubmitOwnerGmail=function(){
     const input=document.getElementById('ownerGmailInput');
     const status=document.getElementById('ownerGmailStatus');
-    const email=String(input?.value||'').trim().toLowerCase();
-    if(!email || !/^[^\s@]+@gmail\.com$/.test(email)){
+    const email=String(input?.value||'').replace(/[\\u200B-\\u200D\\uFEFF]/g,'').trim().toLowerCase();
+    if(input)input.value=email;
+    const validEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+    if(!validEmail){
       if(status)status.textContent='Valid Gmail address ထည့်ပါ။';
       input?.focus();
       return false;
@@ -204,6 +206,13 @@ body.access-pending .staff-session-bar{display:none}
   window.pdkDirectOwnerLogin=function(){
     return window.pdkOpenOwnerGmail();
   };
+  document.addEventListener('click',function(e){
+    const btn=e.target?.closest?.('#ownerGmailModal .owner-gmail-continue');
+    if(!btn)return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.pdkSubmitOwnerGmail();
+  },true);
 })();
 </script>
 <div class="staff-login" id="staffLogin">
