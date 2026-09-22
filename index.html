@@ -500,16 +500,25 @@ async function staffLogin(){
   const user=await staffEnsureAuth();
   const ref=window.pdkFirebaseFns.doc(window.pdkDb,'staffAccessUsers',user.uid);
   const snap=await window.pdkFirebaseFns.getDoc(ref);
+  const now=new Date().toISOString();
+  const device=(navigator.userAgent||'').slice(0,180);
   if(snap.exists()){
     const p=snap.data();
     if((p.name||'').trim().toLowerCase()!==name.toLowerCase()||p.role!==staffRole){
-      if(status)status.textContent='ဒီဖုန်းက Staff account တစ်ခုနဲ့ ချိတ်ထားပြီးသားပါ။ Owner သတ်မှတ်ထားတဲ့ Staff ကိုသာ Login ဝင်နိုင်ပါတယ်။';
+      if(status)status.textContent='ဒီဖုန်းမှာ ရှိပြီးသား Staff account ရဲ့ အမည်/ရာထူးနဲ့ ကိုက်ညီအောင် ရွေးပါ။';
       showToast('This device is already registered as '+(p.name||'Staff')+' · '+staffLabels(p.role));
       return;
     }
-    staffProfile={id:user.uid,...p};
+    if(p.active===false){
+      if(status)status.textContent='🔒 ဒီ Staff account ကို Owner က ပိတ်ထားပါတယ်။';
+      showToast('Owner has disabled this staff account');
+      return;
+    }
+    await window.pdkFirebaseFns.setDoc(ref,{lastLoginAt:now,lastLoginDevice:device},{merge:true});
+    staffProfile={id:user.uid,...p,lastLoginAt:now,lastLoginDevice:device,active:true};
   }else{
-    const empty={name,role:staffRole,active:false,permissions:{},createdAt:new Date().toISOString()};
+    const defaultPermissions={viewTickets:true};
+    const empty={name,role:staffRole,active:true,permissions:defaultPermissions,createdAt:now,lastLoginAt:now,lastLoginDevice:device};
     await window.pdkFirebaseFns.setDoc(ref,empty);
     staffProfile={id:user.uid,...empty};
   }
@@ -519,14 +528,9 @@ async function staffLogin(){
   renderStaffSession();
   applyStaffUI();
   applyStaffControlVisibility();
-  if(staffProfile.active){
-    closeStaffLogin();
-    if(status)status.textContent='Signed in successfully.';
-    showToast('Staff Login successful');
-  }else{
-    if(status)status.textContent='⏳ Waiting for Owner approval. Please wait…';
-    showToast('Owner approval is required');
-  }
+  closeStaffLogin();
+  if(status)status.textContent='Signed in successfully.';
+  showToast('Staff Login successful');
  }catch(e){
   const code=e?.code||'error';
   const detail=(e?.message||'').replace(/^FirebaseError:\s*/i,'').slice(0,120);
@@ -571,7 +575,7 @@ function applyStaffUI(){
 }
 function renderStaffManagement(){
  const box=el('staffList');if(!box)return;const docs=window.pdkStaffDocs||[];if(!docs.length){box.innerHTML='<div class="staff-empty">No staff yet. Staff members will appear here after they enter their name and role.</div>';return}
- box.innerHTML=docs.map(s=>{const p=staffPerms(s.permissions);return '<div class="staff-row"><div class="staff-row-head"><div class="staff-avatar">'+(s.role==='event'?'🦖':s.role==='customer'?'💬':s.role==='entry'?'🚪':'🎟️')+'</div><div class="staff-meta"><strong>'+escapeHtml(s.name||'Staff')+'</strong><small>'+escapeHtml(staffLabels(s.role))+'</small></div><span class="staff-status '+(s.active?'on':'')+'">'+(s.active?'ACTIVE':'PENDING')+'</span></div><div class="staff-role-editor"><label>Staff Role</label><select onchange="updateStaffRole(\''+s.id+'\',this.value)"><option value="sale" '+(s.role==='sale'?'selected':'')+'>🎟️ Sale Staff</option><option value="entry" '+(s.role==='entry'?'selected':'')+'>🚪 Entry Staff</option><option value="customer" '+(s.role==='customer'?'selected':'')+'>💬 Customer Service</option><option value="event" '+(s.role==='event'?'selected':'')+'>🦖 Event Staff</option></select></div><div class="staff-perms">'+STAFF_PERMS.map(([k,my,en])=>'<label class="perm-chip"><input type="checkbox" '+(p[k]?'checked':'')+' onchange="updateStaffPerm(\''+s.id+'\',\''+k+'\',this.checked)"> <span>'+escapeHtml(current==='my'?my:en)+'</span></label>').join('')+'</div><div class="staff-actions"><button class="btn '+(s.active?'secondary':'orange')+'" onclick="toggleStaffActive(\''+s.id+'\','+(!s.active)+')">'+(s.active?'🔒 Disable Staff':'✅ Activate Staff')+'</button><button class="mini danger" onclick="removeStaff(\''+s.id+'\')">🗑️ Remove</button></div></div>'}).join('');
+ box.innerHTML=docs.map(s=>{const p=staffPerms(s.permissions);const last=s.lastLoginAt?new Date(s.lastLoginAt).toLocaleString():'Not logged in yet';return '<div class="staff-row"><div class="staff-row-head"><div class="staff-avatar">'+(s.role==='event'?'🦖':s.role==='customer'?'💬':s.role==='entry'?'🚪':'🎟️')+'</div><div class="staff-meta"><strong>'+escapeHtml(s.name||'Staff')+'</strong><small>'+escapeHtml(staffLabels(s.role))+' · '+(s.active?'Logged in / Active':'Disabled')+'</small><small>Last login: '+escapeHtml(last)+'</small></div><span class="staff-status '+(s.active?'on':'')+'">'+(s.active?'ACTIVE':'DISABLED')+'</span></div><div class="staff-role-editor"><label>Staff Role</label><select onchange="updateStaffRole(\''+s.id+'\',this.value)"><option value="sale" '+(s.role==='sale'?'selected':'')+'>🎟️ Sale Staff</option><option value="entry" '+(s.role==='entry'?'selected':'')+'>🚪 Entry Staff</option><option value="customer" '+(s.role==='customer'?'selected':'')+'>💬 Customer Service</option><option value="event" '+(s.role==='event'?'selected':'')+'>🦖 Event Staff</option></select></div><div class="staff-perms">'+STAFF_PERMS.map(([k,my,en])=>'<label class="perm-chip"><input type="checkbox" '+(p[k]?'checked':'')+' onchange="updateStaffPerm(\''+s.id+'\',\''+k+'\',this.checked)"> <span>'+escapeHtml(current==='my'?my:en)+'</span></label>').join('')+'</div><div class="staff-actions"><button class="btn '+(s.active?'secondary':'orange')+'" onclick="toggleStaffActive(\''+s.id+'\','+(!s.active)+')">'+(s.active?'🔒 Disable Staff':'✅ Activate Staff')+'</button><button class="mini danger" onclick="removeStaff(\''+s.id+'\')">🗑️ Remove</button></div></div>'}).join('');
 }
 async function updateStaffRole(uid,role){if(!isOwnerUser()||!STAFF_ROLES[role])return;try{await window.pdkFirebaseFns.setDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccessUsers',uid),{role,updatedAt:new Date().toISOString()},{merge:true});showToast('Staff role changed to '+staffLabels(role))}catch(e){showToast('Staff role update failed')}}
 async function updateStaffPerm(uid,key,val){if(!isOwnerUser())return;try{const s=window.pdkStaffDocs?.find(x=>x.id===uid);if(!s)return;const perms=Object.assign({},s.permissions||{}, {[key]:!!val});await window.pdkFirebaseFns.setDoc(window.pdkFirebaseFns.doc(window.pdkDb,'staffAccessUsers',uid),{permissions:perms,updatedAt:new Date().toISOString()},{merge:true})}catch(e){showToast('Permission update failed')}}
@@ -619,4 +623,4 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>setTimeout(refresh,1200));
 })();
 </script></body></html>
-<!-- PDK-Vercel-Trigger-2026-09-22-OWNER-REDIRECT-FIX -->
+<!-- PDK-Vercel-Trigger-2026-09-22-STAFF-AUTOLOGIN-PERMISSIONS -->
