@@ -1,4 +1,7 @@
 {
+  "git": {
+    "deploymentEnabled": true
+  },
   "rewrites": [
     { "source": "/app", "destination": "/index.html" },
     { "source": "/app/", "destination": "/index.html" },
