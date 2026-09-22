@@ -233,7 +233,36 @@ async function cloudLoad(user){
   catch(e){setUI("warn","Cloud data could not be loaded: "+(e.code||"error"),user);return false}
 }
 window.pdkFirebaseStart=()=>{if(started)return;started=true;onAuthStateChanged(auth,async user=>{if(!user){setUI("","Please sign in to continue.");window.pdkStaffAuthReady?.(null);return}if(user.isAnonymous){setUI("ok","Staff session connected.");if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(user);return}const expected=ownerEmail();if(!expected||!user.email||user.email.toLowerCase()!==expected){setUI("warn","Google account does not match Owner Gmail.",user);await signOut(auth);return}setUI("ok","Owner verified. Connecting to cloud…",user);await cloudLoad(user);if(window.pdkOwnerReady)window.pdkOwnerReady(user);document.body.classList.remove('staff-gated','access-pending');closeStaffLogin();})};
-window.pdkFirebaseLogin=async()=>{const expected=ownerEmail();if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}setUI("","Opening Google Login…");try{await signInWithPopup(auth,provider)}catch(e){const code=e?.code||"error";if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){try{await signInWithRedirect(auth,provider);return}catch(re){const rcode=re?.code||"redirect-error";setUI("warn","Google sign-in failed: "+rcode);showToast("Google Login: "+rcode);return}}setUI("warn","Google sign-in failed: "+code);const msg=code+((e?.message||"").slice(0,120)?" · "+e.message.slice(0,120):"");showToast("Google Login: "+msg);console.error("PDK owner login error",e)}};getRedirectResult(auth).catch(e=>{const code=e?.code||"redirect-error";setUI("warn","Google redirect failed: "+code);showToast("Google Login: "+code);console.error("PDK owner redirect error",e)});
+window.pdkFirebaseLogin=async()=>{
+ const expected=ownerEmail();
+ if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}
+ try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(e){}
+ setUI("","Opening Owner Google Login…");
+ const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||"");
+ try{
+   // Mobile browsers are more reliable with Firebase's full-page redirect flow.
+   if(isMobile){
+     await signInWithRedirect(auth,provider);
+     return;
+   }
+   await signInWithPopup(auth,provider);
+ }catch(e){
+   const code=e?.code||"error";
+   if(code==="auth/popup-blocked"||code==="auth/popup-closed-by-user"||code==="auth/cancelled-popup-request"){
+     try{await signInWithRedirect(auth,provider);return}catch(re){
+       const rcode=re?.code||"redirect-error";
+       setUI("warn","Google sign-in failed: "+rcode);
+       showToast("Google Login: "+rcode);
+       console.error("PDK owner redirect error",re);
+       return;
+     }
+   }
+   setUI("warn","Google sign-in failed: "+code);
+   const msg=code+((e?.message||"").slice(0,120)?" · "+e.message.slice(0,120):"");
+   showToast("Google Login: "+msg);
+   console.error("PDK owner login error",e);
+ }
+};getRedirectResult(auth).catch(e=>{const code=e?.code||"redirect-error";setUI("warn","Google redirect failed: "+code);showToast("Google Login: "+code);console.error("PDK owner redirect error",e)});
 window.pdkFirebaseLogout=()=>signOut(auth);
 window.pdkFirebaseSyncNow=async()=>{if(!auth.currentUser){showToast(current==="my"?"Google Login အရင်ဝင်ပါ":"Sign in with Google first");return}if(await cloudSave())showToast(current==="my"?"Firebase Sync ပြီးပါပြီ":"Firebase sync completed")};
 window.pdkFirebaseQueueSync=()=>{clearTimeout(window.__pdkCloudTimer);window.__pdkCloudTimer=setTimeout(()=>cloudSave(),900)};
