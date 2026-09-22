@@ -333,9 +333,9 @@ window.pdkFirebaseLogin=async()=>{
  try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(_){}
  setUI("","Opening Owner Google Login…");
  try{
-   if(auth.currentUser?.isAnonymous) await signOut(auth);
-   // Try popup first so the Owner login works reliably on Vercel/mobile browsers.
-   // If the browser blocks the popup, fall back to Firebase redirect.
+   // IMPORTANT: call signInWithPopup immediately from the user's tap.
+   // Awaiting signOut() first breaks the user-gesture chain on mobile/in-app browsers
+   // and can cause the Google popup to be blocked/closed immediately.
    await signInWithPopup(auth,provider);
    return;
  }catch(e){
