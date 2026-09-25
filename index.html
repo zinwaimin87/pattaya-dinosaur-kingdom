@@ -116,46 +116,57 @@ body.access-pending .staff-session-bar{display:none}
 <header class="top"><div class="banner"><div class="banner-brand">
 <svg class="banner-art" viewBox="0 0 1400 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Pattaya Dinosaur Kingdom">
 <defs>
- <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#39b9ff"/><stop offset=".55" stop-color="#8ee8ff"/><stop offset="1" stop-color="#d8ffd0"/></linearGradient>
- <linearGradient id="ground" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#168c3a"/><stop offset="1" stop-color="#063e25"/></linearGradient>
- <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe58a"/><stop offset=".45" stop-color="#f4a51c"/><stop offset="1" stop-color="#b95d05"/></linearGradient>
- <linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d7ff4c"/><stop offset=".5" stop-color="#56c51d"/><stop offset="1" stop-color="#15751a"/></linearGradient>
- <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-opacity=".45"/></filter>
- <filter id="soft"><feGaussianBlur stdDeviation="12"/></filter>
+ <linearGradient id="pdkSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#168fe8"/><stop offset=".52" stop-color="#71d8ff"/><stop offset="1" stop-color="#d7f6d0"/></linearGradient>
+ <linearGradient id="pdkJungle" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2f9b42"/><stop offset="1" stop-color="#073c23"/></linearGradient>
+ <linearGradient id="pdkGold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff0a8"/><stop offset=".38" stop-color="#ffc12e"/><stop offset="1" stop-color="#c75d08"/></linearGradient>
+ <linearGradient id="pdkGreen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e1ff68"/><stop offset=".48" stop-color="#64d525"/><stop offset="1" stop-color="#18851c"/></linearGradient>
+ <filter id="pdkShadow"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-opacity=".5"/></filter>
+ <filter id="pdkGlow"><feGaussianBlur stdDeviation="15"/></filter>
 </defs>
-<rect width="1400" height="360" fill="url(#sky)"/>
-<circle cx="1130" cy="62" r="48" fill="#fff7b2" opacity=".75" filter="url(#soft)"/>
-<path d="M0 255 Q170 130 330 250 T660 245 T980 250 T1400 210 V360H0Z" fill="#5fb7d0" opacity=".48"/>
-<path d="M0 280 Q180 185 350 280 T700 275 T1050 270 T1400 250 V360H0Z" fill="url(#ground)"/>
-<!-- tropical foliage -->
-<g fill="#075d32" opacity=".95">
-<path d="M0 360V105Q55 142 70 200Q88 125 150 94Q116 190 145 260Q88 220 0 215Z"/>
-<path d="M1400 360V88Q1340 125 1320 190Q1295 105 1245 78Q1270 180 1240 255Q1310 210 1400 205Z"/>
+<rect width="1400" height="360" fill="url(#pdkSky)"/>
+<circle cx="1180" cy="55" r="55" fill="#fff6a5" opacity=".7" filter="url(#pdkGlow)"/>
+<path d="M0 285 Q180 185 360 275 T720 270 T1080 260 T1400 235 V360H0Z" fill="#4da8bd" opacity=".45"/>
+<path d="M0 300 Q180 235 360 300 T720 292 T1080 282 T1400 260 V360H0Z" fill="url(#pdkJungle)"/>
+<!-- left tropical leaves -->
+<g fill="#07562f">
+ <path d="M0 360V75Q72 118 88 195Q106 104 182 70Q135 178 166 265Q94 224 0 218Z"/>
+ <path d="M75 360Q78 215 205 132Q150 244 250 360Z"/>
 </g>
-<!-- left T-Rex silhouette -->
-<g class="banner-dino-left" fill="#263b24" stroke="#172718" stroke-width="6" filter="url(#shadow)">
-<path d="M38 276 Q62 205 105 190 Q120 128 194 108 Q250 92 298 130 Q338 164 318 204 Q302 235 260 228 L244 262 L220 280 L180 274 L152 292 L94 286 L70 302Z"/>
-<path d="M104 190 Q82 154 105 126 Q136 95 178 102 Q164 136 139 157 L130 197Z"/>
-<path d="M270 157 Q330 145 352 174 Q362 191 337 199 L286 195Z"/>
-<circle cx="226" cy="142" r="7" fill="#ffe46a" stroke="none"/>
+<!-- right tropical leaves -->
+<g fill="#0a6435">
+ <path d="M1400 360V62Q1332 104 1314 186Q1294 95 1218 62Q1260 174 1230 260Q1310 215 1400 205Z"/>
+ <path d="M1325 360Q1320 225 1195 142Q1248 252 1158 360Z"/>
 </g>
-<!-- right long-neck dinosaur -->
-<g class="banner-dino-right" fill="#527f39" stroke="#315327" stroke-width="6" filter="url(#shadow)">
-<path d="M1080 300 Q1115 254 1160 250 Q1205 245 1238 270 L1280 286 Q1310 296 1348 286 Q1378 278 1395 295 L1395 322 L1345 318 L1290 310 L1235 303 L1175 315 L1125 322Z"/>
-<path d="M1168 258 Q1140 190 1155 130 Q1170 70 1210 48 Q1240 34 1260 57 Q1274 78 1248 96 Q1228 110 1228 148 Q1228 205 1260 260Z"/>
-<circle cx="1238" cy="66" r="7" fill="#ffe46a" stroke="none"/>
+<!-- distant palms -->
+<g fill="none" stroke="#24663b" stroke-width="7" stroke-linecap="round">
+ <path d="M300 300 Q300 205 330 115"/><path d="M330 120 Q270 86 228 112 Q286 116 330 120 Q365 70 430 82 Q370 105 330 120Z"/>
+ <path d="M1080 300 Q1080 210 1050 120"/><path d="M1050 125 Q990 86 950 112 Q1005 116 1050 125 Q1088 76 1150 88 Q1090 110 1050 125Z"/>
 </g>
-<!-- flying pterosaurs -->
-<g fill="none" stroke="#684f36" stroke-width="7" stroke-linecap="round" opacity=".8">
-<path d="M875 82 Q905 54 936 82 Q905 68 875 82Z"/><path d="M1010 115 Q1035 90 1060 115 Q1035 102 1010 115Z"/>
+<!-- animated T-Rex -->
+<g class="banner-dino-left" fill="#4a4d35" stroke="#25291f" stroke-width="7" filter="url(#pdkShadow)">
+ <path d="M30 292 Q58 215 108 196 Q122 126 198 98 Q263 76 312 126 Q348 162 326 204 Q308 239 260 228 L238 271 L195 282 L154 270 L118 300 L64 300Z"/>
+ <path d="M106 196 Q78 156 105 118 Q140 83 188 94 Q169 134 142 157 L132 205Z"/>
+ <path d="M278 153 Q343 142 365 177 Q373 196 343 202 L286 193Z"/>
+ <circle cx="228" cy="137" r="8" fill="#ffe85d" stroke="none"/>
+ <path d="M290 208 Q319 221 341 209" fill="none" stroke="#f4d6b5" stroke-width="5"/>
 </g>
-<!-- clean company logo -->
-<g filter="url(#shadow)">
-<text x="700" y="112" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="78" font-weight="900" fill="url(#gold)" stroke="#6b3905" stroke-width="8" paint-order="stroke">PATTAYA</text>
-<text x="700" y="190" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="82" font-weight="900" fill="url(#gold)" stroke="#5f3605" stroke-width="9" paint-order="stroke">DINOSAUR</text>
-<text x="700" y="272" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="84" font-weight="900" fill="url(#green)" stroke="#174c12" stroke-width="9" paint-order="stroke">KINGDOM</text>
+<!-- right long neck -->
+<g class="banner-dino-right" fill="#5d8b45" stroke="#31542c" stroke-width="7" filter="url(#pdkShadow)">
+ <path d="M1090 312 Q1130 263 1185 255 Q1235 248 1270 274 L1312 292 Q1350 300 1390 286 L1400 322 L1340 320 L1280 311 L1225 307 L1170 322Z"/>
+ <path d="M1188 262 Q1155 196 1170 130 Q1184 67 1228 42 Q1260 27 1282 52 Q1295 73 1267 91 Q1244 108 1245 145 Q1248 211 1280 267Z"/>
+ <circle cx="1260" cy="61" r="8" fill="#ffe85d" stroke="none"/>
 </g>
-<text x="700" y="326" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="800" letter-spacing="6" fill="#063f27">EXPLORE • LEARN • PLAY • CREATE MEMORIES</text>
+<!-- pterosaurs -->
+<g fill="none" stroke="#5a4937" stroke-width="7" stroke-linecap="round" opacity=".85">
+ <path d="M760 75 Q795 40 830 75 Q795 60 760 75Z"/><path d="M900 105 Q928 78 956 105 Q928 92 900 105Z"/>
+</g>
+<!-- company logo -->
+<g filter="url(#pdkShadow)">
+ <text x="700" y="105" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="70" font-weight="900" fill="url(#pdkGold)" stroke="#71410a" stroke-width="8" paint-order="stroke">PATTAYA</text>
+ <text x="700" y="177" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="76" font-weight="900" fill="url(#pdkGold)" stroke="#71410a" stroke-width="9" paint-order="stroke">DINOSAUR</text>
+ <text x="700" y="252" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="78" font-weight="900" fill="url(#pdkGreen)" stroke="#185113" stroke-width="9" paint-order="stroke">KINGDOM</text>
+</g>
+<text x="700" y="320" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="900" letter-spacing="5" fill="#0b4b2b">EXPLORE • LEARN • PLAY • CREATE MEMORIES</text>
 </svg>
 </div></div></header>
 <main class="main">
@@ -542,13 +553,13 @@ function buildCategoryReport(category){const labels={sale:'Sale Ticket',entry:'E
 function roundRectPath(ctx,x,y,w,h,r){const rr=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath()}
 function reportText(category){const labels={sale:'Sale Ticket',entry:'Entry Ticket',playing:'Playing Ticket',event:'Event Ticket'};const list=categoryTickets(category);const totals=categoryTotals(category);const lines=list.map((t,i)=>`${i+1}. ${t.name?.[current]||t.name?.en||'Ticket'} — Qty ${Number(t.qty||0).toLocaleString()} × ฿${Number(t.price||0).toLocaleString()} = ฿${((Number(t.qty)||0)*(Number(t.price)||0)).toLocaleString()}${category==='event'&&t.venue?' — 📍 '+t.venue:''}`);return `🦖 Pattaya Dinosaur Kingdom\n📋 ${labels[category]||'Ticket'} Report\n🕒 ${new Date().toLocaleString()}\n\n${lines.length?lines.join('\\n'):'No tickets'}\n\n🎟️ Total Quantity: ${totals.qty.toLocaleString()}\n💰 Total Amount: ฿${totals.amount.toLocaleString()}\n\n#PattayaDinosaurKingdom`}
 async function buildCategoryReportImage(category){const labels={sale:'Sale Ticket',entry:'Entry Ticket',playing:'Playing Ticket',event:'Event Ticket'};const list=categoryTickets(category);const totals=categoryTotals(category);const W=1080,cardH=190,pad=42,headerH=330,footerH=210;const H=headerH+Math.max(1,list.length)*cardH+footerH;const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#052f3f');bg.addColorStop(.45,'#0b6f79');bg.addColorStop(1,'#063c2e');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);for(let i=0;i<12;i++){ctx.fillStyle=`rgba(255,255,255,${0.025+i%3*.01})`;ctx.beginPath();ctx.arc((i*137)%W,80+(i*83)%(H-100),18+(i%4)*9,0,Math.PI*2);ctx.fill()}const glow=ctx.createRadialGradient(W/2,110,20,W/2,110,470);glow.addColorStop(0,'rgba(255,207,63,.55)');glow.addColorStop(1,'rgba(255,207,63,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,250);
-const svg=document.querySelector('.banner-brand .banner-art');const logoSrc=svg?('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg))):'';const logo=await loadReportImage(logoSrc);
+const svg=document.querySelector('.banner-brand .banner-art');let logo=null;if(svg){try{const markup=new XMLSerializer().serializeToString(svg);const encoded=btoa(unescape(encodeURIComponent(markup)));logo=await loadReportImage('data:image/svg+xml;base64,'+encoded)}catch(_){logo=null}}
 ctx.save();ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=28;ctx.shadowOffsetY=10;roundRectPath(ctx,28,28,W-56,250,36);const hg=ctx.createLinearGradient(0,28,0,278);hg.addColorStop(0,'#39b9ff');hg.addColorStop(.58,'#8ee8ff');hg.addColorStop(1,'#d8ffd0');ctx.fillStyle=hg;ctx.fill();ctx.restore();
-if(logo){ctx.save();roundRectPath(ctx,38,38,W-76,230,28);ctx.clip();const s=Math.max((W-76)/logo.width,230/logo.height);const dw=logo.width*s,dh=logo.height*s;ctx.drawImage(logo,38+(W-76-dw)/2,38+(230-dh)/2,dw,dh);ctx.restore()}
+if(logo){ctx.save();roundRectPath(ctx,38,38,W-76,230,28);ctx.clip();const s=Math.max((W-76)/logo.width,230/logo.height);const dw=logo.width*s,dh=logo.height*s;ctx.drawImage(logo,38+(W-76-dw)/2,38+(230-dh)/2,dw,dh);ctx.restore()}else{ctx.save();ctx.textAlign='center';ctx.font='900 68px Arial';ctx.fillStyle='#f5b51b';ctx.strokeStyle='#6b3905';ctx.lineWidth=10;ctx.strokeText('PATTAYA',W/2,105);ctx.fillText('PATTAYA',W/2,105);ctx.font='900 78px Arial';ctx.strokeText('DINOSAUR',W/2,178);ctx.fillText('DINOSAUR',W/2,178);ctx.fillStyle='#64d525';ctx.strokeStyle='#185113';ctx.strokeText('KINGDOM',W/2,253);ctx.fillText('KINGDOM',W/2,253);ctx.restore()}
 ctx.save();ctx.fillStyle='rgba(2,25,30,.72)';roundRectPath(ctx,52,292,500,58,20);ctx.fill();ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='900 34px Arial';ctx.fillText(labels[category]||'Ticket Report',76,331);ctx.textAlign='right';ctx.font='700 24px Arial';ctx.fillText(new Date().toLocaleDateString(),W-70,331);ctx.restore();
 for(let i=0;i<list.length;i++){const t=list[i],y=headerH+i*cardH;ctx.save();ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=18;ctx.shadowOffsetY=8;roundRectPath(ctx,pad,y,W-pad*2,cardH-18,30);const cg=ctx.createLinearGradient(0,y,W,y+cardH);cg.addColorStop(0,'#ffffff');cg.addColorStop(1,'#e7fbff');ctx.fillStyle=cg;ctx.fill();ctx.restore();const img=await loadReportImage(t.image);if(img){ctx.save();roundRectPath(ctx,pad+18,y+18,150,154,22);ctx.clip();const s=Math.max(150/img.width,154/img.height);const dw=img.width*s,dh=img.height*s;ctx.drawImage(img,pad+18+(150-dw)/2,y+18+(154-dh)/2,dw,dh);ctx.restore()}else{ctx.fillStyle='#d7f3e8';roundRectPath(ctx,pad+18,y+18,150,154,22);ctx.fill();ctx.fillStyle='#0b6650';ctx.font='700 70px Arial';ctx.textAlign='center';ctx.fillText(t.emoji||'🎟️',pad+93,y+112)}
 ctx.textAlign='left';ctx.fillStyle='#073747';ctx.font='900 34px Arial';ctx.fillText(String(t.name?.[current]||t.name?.en||'Ticket').slice(0,32),pad+190,y+58);ctx.fillStyle='#47717c';ctx.font='600 25px Arial';ctx.fillText('Price  ฿'+Number(t.price||0).toLocaleString(),pad+190,y+96);ctx.fillStyle='#087b54';ctx.font='900 32px Arial';ctx.fillText('Quantity  '+Number(t.qty||0).toLocaleString(),pad+190,y+140);if(category==='event'&&t.venue){ctx.fillStyle='#a15b0b';ctx.font='600 21px Arial';ctx.fillText('📍 '+String(t.venue).slice(0,45),pad+510,y+96)}}
-const fy=headerH+list.length*cardH+8;ctx.save();ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=24;roundRectPath(ctx,28,fy,W-56,footerH-28,34);const fg=ctx.createLinearGradient(0,fy,W,fy+footerH);fg.addColorStop(0,'#073e2c');fg.addColorStop(.5,'#19a56d');fg.addColorStop(1,'#ffe15b');ctx.fillStyle=fg;ctx.fill();ctx.restore();if(logo){ctx.save();ctx.beginPath();ctx.arc(108,fy+82,52,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.96)';ctx.fill();ctx.clip();const s=Math.min(94/logo.width,94/logo.height);ctx.drawImage(logo,108-logo.width*s/2,fy+82-logo.height*s/2,logo.width*s,logo.height*s);ctx.restore()}ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='900 34px Arial';ctx.fillText('TOTAL TICKETS',180,fy+65);ctx.font='900 76px Arial';ctx.fillText(String(totals.qty.toLocaleString()),180,fy+145);ctx.textAlign='right';ctx.fillStyle='#063c2e';ctx.font='900 36px Arial';ctx.fillText('฿'+totals.amount.toLocaleString(),W-62,fy+88);ctx.font='600 23px Arial';ctx.fillText('Pattaya Dinosaur Kingdom • Ticket Counter',W-62,fy+132);ctx.font='600 20px Arial';ctx.fillText('Generated '+new Date().toLocaleString(),W-62,fy+164);return canvas}
+const fy=headerH+list.length*cardH+8;ctx.save();ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=24;roundRectPath(ctx,28,fy,W-56,footerH-28,34);const fg=ctx.createLinearGradient(0,fy,W,fy+footerH);fg.addColorStop(0,'#073e2c');fg.addColorStop(.5,'#19a56d');fg.addColorStop(1,'#ffe15b');ctx.fillStyle=fg;ctx.fill();ctx.restore();if(logo){ctx.save();ctx.beginPath();ctx.arc(108,fy+82,52,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.96)';ctx.fill();ctx.clip();const s=Math.min(94/logo.width,94/logo.height);ctx.drawImage(logo,108-logo.width*s/2,fy+82-logo.height*s/2,logo.width*s,logo.height*s);ctx.restore()}else{ctx.save();ctx.beginPath();ctx.arc(108,fy+82,52,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.96)';ctx.fill();ctx.textAlign='center';ctx.font='900 13px Arial';ctx.fillStyle='#15851d';ctx.fillText('PDK',108,fy+88);ctx.restore()}ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='900 34px Arial';ctx.fillText('TOTAL TICKETS',180,fy+65);ctx.font='900 76px Arial';ctx.fillText(String(totals.qty.toLocaleString()),180,fy+145);ctx.textAlign='right';ctx.fillStyle='#063c2e';ctx.font='900 36px Arial';ctx.fillText('฿'+totals.amount.toLocaleString(),W-62,fy+88);ctx.font='600 23px Arial';ctx.fillText('Pattaya Dinosaur Kingdom • Ticket Counter',W-62,fy+132);ctx.font='600 20px Arial';ctx.fillText('Generated '+new Date().toLocaleString(),W-62,fy+164);return canvas}
 async function saveAndShareReport(category){const report=reportText(category);localStorage.setItem('pdkLastReport_'+category,report);try{const canvas=await buildCategoryReportImage(category);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));if(!blob)throw new Error('image');const fileName=`pattaya-dinosaur-${category}-report-${new Date().toISOString().slice(0,10)}.png`;const file=new File([blob],fileName,{type:'image/png'});const canFileShare=!!navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}));if(canFileShare){await navigator.share({title:'Pattaya Dinosaur Kingdom - '+category+' Report',text:report,files:[file]});showToast(current==='my'?'Report ပုံသိမ်းပြီး Share လုပ်ပြီးပါပြီ':current==='th'?'บันทึกรูปรายงานและแชร์แล้ว':'Report image saved and shared')}else if(navigator.share){await navigator.share({title:'Pattaya Dinosaur Kingdom - '+category+' Report',text:report});downloadReportBlob(blob,fileName);showToast(current==='my'?'Report ပုံသိမ်းပြီးပါပြီ။ Share menu မှာ စာသားပို့နိုင်ပါတယ်':'Report image saved. Share text is ready')}else{downloadReportBlob(blob,fileName);copyReportFallback(report,category)}}catch(err){if(err?.name==='AbortError')return;console.error(err);downloadReportBlobFromText(report,category)}} 
 function downloadReportBlob(blob,fileName){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fileName;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 function downloadReportBlobFromText(report,category){const blob=new Blob([report],{type:'text/plain;charset=utf-8'});downloadReportBlob(blob,`pattaya-dinosaur-${category}-report.txt`);showToast(current==='my'?'Report ကိုသိမ်းပြီးပါပြီ':'Report saved')}
