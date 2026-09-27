@@ -841,5 +841,35 @@ if('serviceWorker' in navigator){
   window.addEventListener('appinstalled',()=>{deferredPrompt=null;refresh()});
   window.addEventListener('load',()=>setTimeout(refresh,1200));
 })();
-</script></body></html>
+</script>
+<!-- PDK-INTERACTION-RECOVERY -->
+<script>
+(function(){
+  function restorePDKInteractions(){
+    try{
+      const owner=typeof isOwnerUser==='function'&&isOwnerUser();
+      const staff=typeof staffProfile!=='undefined'&&!!staffProfile&&staffProfile.active===true&&!owner;
+      if(owner||staff){
+        document.body.classList.remove('staff-gated','access-pending');
+        document.querySelectorAll('.main,.bottom').forEach(el=>{el.style.pointerEvents='';el.style.userSelect=''});
+        const login=document.getElementById('staffLogin');
+        if(login)login.classList.remove('show');
+      }
+    }catch(e){console.warn('PDK interaction recovery',e)}
+  }
+  window.pdkRestoreInteractions=restorePDKInteractions;
+  window.addEventListener('load',()=>setTimeout(restorePDKInteractions,500));
+  window.addEventListener('pageshow',restorePDKInteractions);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)restorePDKInteractions()});
+  setInterval(restorePDKInteractions,1500);
+  document.addEventListener('click',e=>{
+    const b=e.target.closest?.('button[data-page]');
+    if(b){
+      const p=b.dataset.page;
+      if(p&&typeof go==='function'){e.preventDefault();e.stopPropagation();go(p);}
+    }
+  },false);
+})();
+</script>
+</body></html>
 <!-- PDK-Vercel-Trigger-2026-09-22-OWNER-LOGIN-FIX-V2 -->
