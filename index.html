@@ -714,7 +714,7 @@ async function staffLogin(){
     staffProfile={id:user.uid,...p,lastLoginAt:now,lastLoginDevice:device,active:true};
   }else{
     const defaultPermissions={viewTickets:true};
-    const empty={name,role:staffRole,active:true,permissions:defaultPermissions,createdAt:now,lastLoginAt:now,lastLoginDevice:device};
+    const empty={name,role:staffRole,active:false,permissions:defaultPermissions,createdAt:now,lastLoginAt:now,lastLoginDevice:device};
     await window.pdkFirebaseFns.setDoc(ref,empty);
     staffProfile={id:user.uid,...empty};
   }
@@ -724,9 +724,15 @@ async function staffLogin(){
   renderStaffSession();
   applyStaffUI();
   applyStaffControlVisibility();
-  closeStaffLogin();
-  if(status)status.textContent='Signed in successfully.';
-  showToast('Staff Login successful');
+  if(staffProfile.active){
+    closeStaffLogin();
+    if(status)status.textContent='Signed in successfully.';
+    showToast('Staff Login successful');
+  }else{
+    if(status)status.textContent='⏳ Staff account created. Waiting for Owner approval…';
+    openStaffLogin();
+    showToast('Waiting for Owner approval');
+  }
  }catch(e){
   const code=e?.code||'error';
   const detail=(e?.message||'').replace(/^FirebaseError:\s*/i,'').slice(0,120);
@@ -773,6 +779,7 @@ document.addEventListener('click',e=>{
 function renderStaffSession(){const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
 function applyStaffUI(){
  const owner=isOwnerUser(),staff=!!staffProfile&&!owner,guest=!owner&&!staff;
+ window.pdkStaffProfileActive=!!(staffProfile&&staffProfile.active);
  document.body.classList.remove('access-pending');
  document.body.classList.toggle('owner-mode',owner);
  document.body.classList.toggle('staff-mode',staff);
@@ -861,7 +868,7 @@ if('serviceWorker' in navigator){
       const u=window.pdkAuth?.currentUser;
       const expected=String(window.pdkOwnerEmail?.()||'1987zinwaimin@gmail.com').toLowerCase();
       const owner=!!u&&!u.isAnonymous&&String(u.email||'').toLowerCase()===expected;
-      const staff=!owner&&document.body.classList.contains('staff-mode')&&!!u?.isAnonymous;
+      const staff=!owner&&document.body.classList.contains('staff-mode')&&!!u?.isAnonymous&&window.pdkStaffProfileActive===true;
       return {owner,staff};
     }catch(_){return {owner:false,staff:false}}
   }
