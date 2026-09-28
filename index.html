@@ -719,12 +719,12 @@ async function staffLogin(){
     staffProfile={id:user.uid,...empty};
   }
   localStorage.setItem('pdkStaffSession',JSON.stringify({uid:user.uid,name:staffProfile.name,role:staffProfile.role}));
-  await staffLoadSharedState();
-  startStaffRealtime();
   renderStaffSession();
   applyStaffUI();
   applyStaffControlVisibility();
   if(staffProfile.active){
+    await staffLoadSharedState();
+    startStaffRealtime();
     closeStaffLogin();
     if(status)status.textContent='Signed in successfully.';
     showToast('Staff Login successful');
