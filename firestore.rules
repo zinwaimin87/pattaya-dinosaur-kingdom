@@ -45,12 +45,13 @@ service cloud.firestore {
       // Owner can see and manage every staff account.
       allow read: if isOwner() || (request.auth != null && request.auth.uid == staffUid);
 
-      // A new anonymous staff device can create its own account and is active immediately.
+      // A new anonymous staff device creates a pending account.
+      // Owner must activate it before the staff member can access the app.
       allow create: if isAnon()
         && request.auth.uid == staffUid
         && request.resource.data.name is string
         && request.resource.data.role in ['sale','entry','customer','event']
-        && request.resource.data.active == true;
+        && request.resource.data.active == false;
 
       // Staff can update only their own login metadata. They cannot change role,
       // permissions, or active/disabled state.
