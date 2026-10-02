@@ -297,8 +297,7 @@ body.owner-mode .top,body.owner-mode .main,body.owner-mode .bottom,body.staff-mo
     <div class="staff-login-top">
       <div class="staff-login-logo">🦖</div>
       <h2>SIGN IN</h2>
-      <p>Username ထည့်ပြီး သက်ဆိုင်ရာ Staff ကိုရွေးပါ။ Owner က ခွင့်ပြုထားမှ Staff Area ကို ဝင်နိုင်ပါမယ်။</p>
-    </div>
+      <p>Username ထည့်ပြီး သက်ဆိုင်ရာ Staff ကိုရွေးပါ။ Owner က ခွင့်ပြုထားမှ Staff Area ကို ဝင်နိုင်ပါမယ်။</p>    </div>
     <div class="staff-login-form">
       <label class="staff-field-label" for="staffNameInput">USERNAME</label>
       <input id="staffNameInput" maxlength="50" autocomplete="username" placeholder="Enter your username">
@@ -335,7 +334,12 @@ body.owner-mode .top,body.owner-mode .main,body.owner-mode .bottom,body.staff-mo
   </div>
 </div>
 <div class="staff-session-bar" id="staffSessionBar"><span class="staff-session-dot"></span><span id="staffSessionText">Staff</span><button onclick="staffLogout()" title="Logout">×</button></div>
-<div class="modal" id="eventModal" onclick="if(event.target===this)closeEventModal()"><div class="modal-card"><div class="modal-head"><div><h3>DINO MEET &amp; GREET</h3><div class="help">Set a different number of show times for each day. Monday can have 3 times, Saturday can have 5 times, etc.</div></div><button class="close" onclick="closeEventModal()">×</button></div><div class="full"><label>Weekly Schedule</label><div id="eventDayScheduleEditor" class="day-schedule-editor"></div></div><div class="hero-actions"><button class="btn" onclick="saveEventSchedule()">Save Schedule</button><button class="btn secondary" onclick="closeEventModal()">Cancel</button></div></div></div><div class="modal" id="ticketModal" onclick="if(event.target===this)closeTicketModal()"><div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add Ticket</h3><div class="help">Upload a ticket image from your phone. The image will automatically fit the full area without cropping.</div></div><button class="close" onclick="closeTicketModal()">×</button></div><div class="upload-box"><div class="upload-preview" id="uploadPreview"><span>🎟️</span></div><label class="file-label">📷 Choose ticket image<input id="ticketImageInput" type="file" accept="image/*"></label><div class="help">JPG / PNG / WEBP • Full image shown with “contain” so the original picture is not cut off.</div></div><div class="form-grid form"><div><label id="modalNameLabel">Ticket Name</label><input id="modalName" placeholder="Adult Ticket"></div><div><label id="modalPriceLabel">Price (THB)</label><input id="modalPrice" type="number" min="0" step="1" placeholder="600"></div><div><label id="modalQtyLabel">Quantity</label><input id="modalQty" type="number" min="0" step="1" value="0" placeholder="0"></div><div><label id="modalTypeLabel">Type</label><select id="modalType"><option value="adult">Adult</option><option value="child">Child</option><option value="family">Family</option><option value="event">Event</option></select></div><div><label id="modalCategoryLabel">Category</label><select id="modalCategory"><option value="sale">Sale Ticket</option><option value="entry">Entry Ticket</option><option value="playing">Playing Ticket</option><option value="event">Event Ticket</option></select></div><div class="full event-venue-field"><label id="modalVenueLabel">Event Location / Venue</label><input id="modalVenue" placeholder="Enter event location / venue"></div><div class="full"><label id="modalDescLabel">Description</label><input id="modalDesc" placeholder="Ticket description"></div></div><div class="hero-actions"><button type="button" class="btn" id="modalSave">Save Ticket</button><button class="btn secondary" onclick="closeTicketModal()">Cancel</button></div></div></div><nav class="bottom"><div class="nav"><button class="active" data-page="home"><span class="icon">⌂</span><span id="navHome">Home</span></button><button data-page="tickets"><span class="icon">🎟️</span><span id="navTickets">Tickets</span></button><button data-page="events"><span class="icon">🦖</span><span id="navEvents">Events</span></button><button data-page="saleTicket"><span class="icon">🧾</span><span id="navSales">Sale</span></button><button data-page="language"><span class="icon">文</span><span id="navLanguage">Language</span></button><button data-page="settings"><span class="icon">⚙️</span><span id="navSetting">Setting</span></button></div></nav>
+<div class="modal" id="eventModal" onclick="if(event.target===this)closeEventModal()"><div class="modal-card"><div class="modal-head"><div><h3>DINO MEET &amp; GREET</h3><div class="help">Set a different number of show times for each day. Monday can have 3 times, Saturday can have 5 times, etc.</div></div><button class="close" onclick="closeEventModal()">×</button></div><div class="full"><label>Weekly Schedule</label><div id="eventDayScheduleEditor" class="day-schedule-editor"></div></div><div class="hero-actions"><button class="btn" onclick="saveEventSchedule()">Save Schedule</button><button class="btn secondary" onclick="closeEventModal()">Cancel</button></div></div></div><div class="modal" id="ticketModal" onclick="if(event.target===this)closeTicketModal()"><div class="modal-card"><div class="modal-head"><div><h3 id="modalTitle">Add Ticket</h3><div class="help">Upload a ticket image from your phone. The image will automatically fit the full area without cropping.</div></div><button class="close" onclick="closeTicketModal()">×</button></div><div class="upload-box"><div class="upload-preview" id="uploadPreview"><span>🎟️</span></div><label class="file-label">📷 Choose ticket image<input id="ticketImageInput" type="file" accept="image/*"></label><div class="help">JPG / PNG / WEBP • Full image shown with “contain” so the original picture is not cut off.</div></div><div class="form-grid form"><div><label id="modalNameLabel">Ticket Name</label><input id="modalName" placeholder="Adult Ticket"></div><div><label id="modalPriceLabel">Price (THB)</label><input id="modalPrice" type="number" min="0" step="1" placeholder="600"></div><div><label id="modalQtyLabel">Quantity</label><input id="modalQty" type="number" min="0" step="1" value="0" placeholder="0"></div><div><label id="modalTypeLabel">Type</label><select id="modalType"><option value="adult">Adult</option><option value="child">Child</option><option value="family">Family</option><option value="event">Event</option></select></div><div><label id="modalCategoryLabel">Category</label><select id="modalCategory"><option value="sale">Sale Ticket</option><option value="entry">Entry Ticket</option><option value="playing">Playing Ticket</option><option value="event">Event Ticket</option></select></div><div class="full event-venue-field"><label id="modalVenueLabel">Event Location / Venue</label><input id="modalVenue" placeholder="Enter event location / venue"></div><div class="full"><label id="modalDescLabel">Description</label><input id="modalDesc" placeholder="Ticket description"></div></div><div class="hero-actions"><button type="button" class="btn" id="modalSave">Save Ticket</button><button class="btn secondary" onclick="closeTicketModal()">Cancel</button></div></div></div><style id="pdk-auth-switch-style">
+#pdkAuthSwitchBtn{position:fixed;right:14px;bottom:96px;z-index:45;border:1px solid rgba(255,255,255,.18);background:rgba(7,25,40,.96);color:#fff;border-radius:999px;padding:10px 14px;font:800 11px Inter,'Noto Sans Myanmar',system-ui,sans-serif;box-shadow:0 10px 28px rgba(0,0,0,.35);backdrop-filter:blur(14px);cursor:pointer}
+#pdkAuthSwitchBtn:active{transform:scale(.97)}
+@media(max-width:560px){#pdkAuthSwitchBtn{right:12px;bottom:94px;padding:9px 12px;font-size:10px}}
+</style>
+<button id="pdkAuthSwitchBtn" type="button" onclick="window.pdkAuthSwitch()">👑 Owner Login</button><nav class="bottom"><div class="nav"><button class="active" data-page="home"><span class="icon">⌂</span><span id="navHome">Home</span></button><button data-page="tickets"><span class="icon">🎟️</span><span id="navTickets">Tickets</span></button><button data-page="events"><span class="icon">🦖</span><span id="navEvents">Events</span></button><button data-page="saleTicket"><span class="icon">🧾</span><span id="navSales">Sale</span></button><button data-page="language"><span class="icon">文</span><span id="navLanguage">Language</span></button><button data-page="settings"><span class="icon">⚙️</span><span id="navSetting">Setting</span></button></div></nav>
 <div id="toast" class="toast"></div>
 </div>
 
@@ -350,6 +354,32 @@ let started=false,busy=false;
 const el=id=>document.getElementById(id);
 function ownerEmail(){return "1987zinwaimin@gmail.com"}
 window.pdkOwnerEmail=ownerEmail;
+function renderAuthSwitch(){
+  const b=document.getElementById("pdkAuthSwitchBtn");
+  if(!b)return;
+  const u=window.pdkAuth?.currentUser;
+  if(u?.isAnonymous){b.textContent="↪️ Staff Logout";b.title="Staff Logout";}
+  else if(u&&!u.isAnonymous&&String(u.email||"").toLowerCase()===ownerEmail()){b.textContent="↪️ Owner Logout";b.title="Owner Logout";}
+  else {b.textContent="👑 Owner Login";b.title="Owner Login";}
+}
+window.pdkAuthSwitch=async()=>{
+  const u=window.pdkAuth?.currentUser;
+  try{
+    if(u?.isAnonymous){
+      if(typeof window.staffLogout==="function") await window.staffLogout();
+      else await signOut(auth);
+      return;
+    }
+    if(u&&!u.isAnonymous){
+      await signOut(auth);
+      renderAuthSwitch();
+      window.pdkStaffAuthReady?.(null);
+      return;
+    }
+    if(window.pdkFirebaseLogin) await window.pdkFirebaseLogin();
+    else window.pdkStaffAuthReady?.(null);
+  }catch(e){console.error("PDK auth switch",e);showToast("Logout/Login failed");}
+};
 function setUI(state,msg,user){
   const dot=el("firebaseDot"),status=el("firebaseStatus"),login=el("firebaseLoginBtn"),logout=el("firebaseLogoutBtn"),box=el("firebaseUser");
   if(dot)dot.className="firebase-dot "+(state==="ok"?"ok":state==="warn"?"warn":"");
@@ -371,12 +401,14 @@ async function cloudLoad(user){
 }
 let ownerLoginBusy=false;
 async function handlePdkAuthUser(user){
+  renderAuthSwitch();
   if(!user){
     setUI("","Please sign in to continue.");
     if(!ownerLoginBusy)window.pdkStaffAuthReady?.(null);
     return;
   }
   if(user.isAnonymous){
+    renderAuthSwitch();
     setUI("ok","Staff session connected.");
     if(!ownerLoginBusy)window.pdkStaffAuthReady?.(user);
     return;
@@ -390,6 +422,7 @@ async function handlePdkAuthUser(user){
     if(window.pdkStaffAuthReady)window.pdkStaffAuthReady(null);
     return;
   }
+  renderAuthSwitch();
   setUI("ok","Owner verified. Connecting to cloud…",user);
   await cloudLoad(user);
   try{window.pdkFinalizeOwnerMode?.()}catch(_){}
@@ -406,6 +439,9 @@ window.pdkFirebaseLogin=async()=>{
  if(!expected){showToast(current==="my"?"အရင် Owner Gmail သိမ်းပါ":"Save Owner Gmail first");return}
  ownerLoginBusy=true;
  try{window.pdkPrepareOwnerLogin?.()}catch(_){}
+ // If a Staff/anonymous session is still active, explicitly sign it out before Owner Google login.
+ // Firebase persists the current Auth user across page reloads, so this prevents the Staff session from blocking the Owner flow.
+ try{if(auth.currentUser?.isAnonymous)await signOut(auth)}catch(_){}
  try{provider.setCustomParameters({login_hint:expected,prompt:"select_account"})}catch(_){}
  const status=document.getElementById("ownerGmailStatus");
  const modal=document.getElementById("ownerGmailModal");
@@ -457,7 +493,7 @@ getRedirectResult(auth).then(result=>{
   showToast("Google Login: "+code);
   console.error("PDK owner redirect error",e);
 });
-window.pdkFirebaseLogout=()=>signOut(auth);
+window.pdkFirebaseLogout=async()=>{await signOut(auth);renderAuthSwitch();window.pdkStaffAuthReady?.(null);};
 window.pdkFirebaseSyncNow=async()=>{if(!auth.currentUser){showToast(current==="my"?"Google Login အရင်ဝင်ပါ":"Sign in with Google first");return}if(await cloudSave())showToast(current==="my"?"Firebase Sync ပြီးပါပြီ":"Firebase sync completed")};
 window.pdkFirebaseQueueSync=()=>{clearTimeout(window.__pdkCloudTimer);window.__pdkCloudTimer=setTimeout(()=>cloudSave(),900)};
 // Start Firebase here too, because module scripts execute after classic scripts during page parsing.
@@ -497,8 +533,7 @@ function categoryTickets(category){return tickets.filter(t=>t.category===categor
 function categoryTotals(category){return categoryTickets(category).reduce((a,t)=>{const q=Math.max(0,Math.floor(Number(t.qty)||0));a.qty+=q;a.amount+=q*Number(t.price||0);return a},{qty:0,amount:0})}
 function buildCategoryReport(category){const labels={sale:'Sale Ticket',entry:'Entry Ticket',playing:'Playing Ticket',event:'Event Ticket'};const names={sale:'Sale',entry:'Entry',playing:'Playing',event:'Event'};const list=categoryTickets(category);const totalQty=list.reduce((s,t)=>s+(Number(t.qty)||0),0);const totalAmount=list.reduce((s,t)=>s+(Number(t.qty)||0)*(Number(t.price)||0),0);const lines=list.map((t,i)=>`${i+1}. ${t.name?.[current]||t.name?.en||'Ticket'} — Qty: ${Number(t.qty||0).toLocaleString()} × ฿${Number(t.price||0).toLocaleString()} = ฿${((Number(t.qty)||0)*(Number(t.price)||0)).toLocaleString()}${category==='event'&&t.venue?' — 📍 '+t.venue:''}`);const date=new Date().toLocaleString();return `🦖 Pattaya Dinosaur Kingdom\n📋 ${labels[category]||names[category]||'Ticket'} Report\n🕒 ${date}\n\n${lines.length?lines.join('\\n'):'No tickets'}\n\n🎟️ Total Quantity: ${totalQty.toLocaleString()}\n💰 Total Amount: ฿${totalAmount.toLocaleString()}\n\n#PattayaDinosaurKingdom`}async function loadReportImage(src){return new Promise(resolve=>{if(!src){resolve(null);return}const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=src})}
 function roundRectPath(ctx,x,y,w,h,r){const rr=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath()}
-function reportText(category){const labels={sale:'Sale Ticket',entry:'Entry Ticket',playing:'Playing Ticket',event:'Event Ticket'};const list=categoryTickets(category);const totals=categoryTotals(category);const lines=list.map((t,i)=>`${i+1}. ${t.name?.[current]||t.name?.en||'Ticket'} — Qty ${Number(t.qty||0).toLocaleString()} × ฿${Number(t.price||0).toLocaleString()} = ฿${((Number(t.qty)||0)*(Number(t.price)||0)).toLocaleString()}${category==='event'&&t.venue?' — 📍 '+t.venue:''}`);return `🦖 Pattaya Dinosaur Kingdom\n📋 ${labels[category]||'Ticket'} Report\n🕒 ${new Date().toLocaleString()}\n\n${lines.length?lines.join('\\n'):'No tickets'}\n\n🎟️ Total Quantity: ${totals.qty.toLocaleString()}\n💰 Total Amount: ฿${totals.amount.toLocaleString()}\n\n#PattayaDinosaurKingdom`}
-const REPORT_LOGO_SVG="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1400 360\" preserveAspectRatio=\"xMidYMid slice\"><defs><linearGradient id=\"sky\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#63d8ff\"/><stop offset=\".62\" stop-color=\"#b8efff\"/><stop offset=\"1\" stop-color=\"#7bd47a\"/></linearGradient><linearGradient id=\"j\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#247a38\"/><stop offset=\"1\" stop-color=\"#073c24\"/></linearGradient><linearGradient id=\"gold\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#ffe98b\"/><stop offset=\".42\" stop-color=\"#ffb51f\"/><stop offset=\"1\" stop-color=\"#c85b09\"/></linearGradient><linearGradient id=\"green\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#c8ff55\"/><stop offset=\".45\" stop-color=\"#5bce22\"/><stop offset=\"1\" stop-color=\"#16801d\"/></linearGradient><filter id=\"shadow\"><feDropShadow dx=\"0\" dy=\"7\" stdDeviation=\"6\" flood-opacity=\".55\"/></filter></defs><rect width=\"1400\" height=\"360\" fill=\"url(#sky)\"/><circle cx=\"1200\" cy=\"75\" r=\"62\" fill=\"#fff5a0\" opacity=\".6\"/><path d=\"M0 290 Q180 205 360 285T720 280T1080 270T1400 250V360H0Z\" fill=\"url(#j)\"/><g fill=\"#07542e\"><path d=\"M0 360V55Q75 95 92 190Q112 95 195 55Q145 175 165 275Q90 220 0 210Z\"/><path d=\"M70 360Q85 220 230 135Q165 255 265 360Z\"/><path d=\"M1400 360V55Q1325 95 1308 190Q1288 95 1205 55Q1255 175 1235 275Q1310 220 1400 210Z\"/></g><g fill=\"#4c5138\" stroke=\"#24291f\" stroke-width=\"8\" filter=\"url(#shadow)\"><path d=\"M42 298Q62 218 126 196Q128 112 210 84Q294 56 345 132Q378 184 330 225L285 236Q272 296 228 326L178 326L156 282L118 324Z\"/><path d=\"M245 150Q330 116 394 153Q426 172 395 198L327 210Q278 204 245 150Z\"/><path d=\"M327 210L392 224L350 240L304 232Z\"/><path d=\"M183 326L171 353M245 326L260 353\" fill=\"none\" stroke-linecap=\"round\"/><circle cx=\"280\" cy=\"128\" r=\"8\" fill=\"#ffe95a\" stroke=\"none\"/></g><g fill=\"#6a7b3d\" stroke=\"#31451e\" stroke-width=\"7\" filter=\"url(#shadow)\"><path d=\"M1100 320Q1045 275 1078 236Q1112 198 1150 215Q1172 180 1164 105Q1158 50 1205 38Q1248 28 1250 82Q1251 143 1220 204Q1270 212 1300 248Q1332 286 1310 320Z\"/><path d=\"M1190 82Q1230 57 1275 78Q1298 90 1278 107L1214 108Z\"/><circle cx=\"1234\" cy=\"73\" r=\"7\" fill=\"#ffe95a\" stroke=\"none\"/></g><path d=\"M690 78Q730 35 775 72Q820 35 860 78Q810 70 778 96Q746 70 690 78Z\" fill=\"#7a5b3d\" opacity=\".9\"/><g text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-weight=\"900\" filter=\"url(#shadow)\"><text x=\"700\" y=\"116\" font-size=\"74\" fill=\"url(#gold)\" stroke=\"#6d3706\" stroke-width=\"8\" paint-order=\"stroke\">PATTAYA</text><text x=\"700\" y=\"190\" font-size=\"76\" fill=\"url(#gold)\" stroke=\"#6d3706\" stroke-width=\"9\" paint-order=\"stroke\">DINOSAUR</text><text x=\"700\" y=\"265\" font-size=\"78\" fill=\"url(#green)\" stroke=\"#18500e\" stroke-width=\"9\" paint-order=\"stroke\">KINGDOM</text><text x=\"700\" y=\"312\" font-size=\"19\" letter-spacing=\"7\" fill=\"#123a29\" stroke=\"none\">EXPLORE • LEARN • PLAY • CREATE MEMORIES</text></g><g transform=\"translate(1120 275) rotate(-5)\"><path d=\"M0 0h235l-18 67H18Z\" fill=\"#5b351f\" stroke=\"#2c1c12\" stroke-width=\"7\"/><text x=\"117\" y=\"28\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" font-weight=\"900\" fill=\"#ffe3a1\">PATTAYA</text><text x=\"117\" y=\"51\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" font-weight=\"900\" fill=\"#ffe3a1\">DINOSAUR KINGDOM</text></g></svg>";
+function reportText(category){const labels={sale:'Sale Ticket',entry:'Entry Ticket',playing:'Playing Ticket',event:'Event Ticket'};const list=categoryTickets(category);const totals=categoryTotals(category);const lines=list.map((t,i)=>`${i+1}. ${t.name?.[current]||t.name?.en||'Ticket'} — Qty ${Number(t.qty||0).toLocaleString()} × ฿${Number(t.price||0).toLocaleString()} = ฿${((Number(t.qty)||0)*(Number(t.price)||0)).toLocaleString()}${category==='event'&&t.venue?' — 📍 '+t.venue:''}`);return `🦖 Pattaya Dinosaur Kingdom\n📋 ${labels[category]||'Ticket'} Report\n🕒 ${new Date().toLocaleString()}\n\n${lines.length?lines.join('\\n'):'No tickets'}\n\n🎟️ Total Quantity: ${totals.qty.toLocaleString()}\n💰 Total Amount: ฿${totals.amount.toLocaleString()}\n\n#PattayaDinosaurKingdom`}const REPORT_LOGO_SVG="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1400 360\" preserveAspectRatio=\"xMidYMid slice\"><defs><linearGradient id=\"sky\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#63d8ff\"/><stop offset=\".62\" stop-color=\"#b8efff\"/><stop offset=\"1\" stop-color=\"#7bd47a\"/></linearGradient><linearGradient id=\"j\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#247a38\"/><stop offset=\"1\" stop-color=\"#073c24\"/></linearGradient><linearGradient id=\"gold\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#ffe98b\"/><stop offset=\".42\" stop-color=\"#ffb51f\"/><stop offset=\"1\" stop-color=\"#c85b09\"/></linearGradient><linearGradient id=\"green\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop stop-color=\"#c8ff55\"/><stop offset=\".45\" stop-color=\"#5bce22\"/><stop offset=\"1\" stop-color=\"#16801d\"/></linearGradient><filter id=\"shadow\"><feDropShadow dx=\"0\" dy=\"7\" stdDeviation=\"6\" flood-opacity=\".55\"/></filter></defs><rect width=\"1400\" height=\"360\" fill=\"url(#sky)\"/><circle cx=\"1200\" cy=\"75\" r=\"62\" fill=\"#fff5a0\" opacity=\".6\"/><path d=\"M0 290 Q180 205 360 285T720 280T1080 270T1400 250V360H0Z\" fill=\"url(#j)\"/><g fill=\"#07542e\"><path d=\"M0 360V55Q75 95 92 190Q112 95 195 55Q145 175 165 275Q90 220 0 210Z\"/><path d=\"M70 360Q85 220 230 135Q165 255 265 360Z\"/><path d=\"M1400 360V55Q1325 95 1308 190Q1288 95 1205 55Q1255 175 1235 275Q1310 220 1400 210Z\"/></g><g fill=\"#4c5138\" stroke=\"#24291f\" stroke-width=\"8\" filter=\"url(#shadow)\"><path d=\"M42 298Q62 218 126 196Q128 112 210 84Q294 56 345 132Q378 184 330 225L285 236Q272 296 228 326L178 326L156 282L118 324Z\"/><path d=\"M245 150Q330 116 394 153Q426 172 395 198L327 210Q278 204 245 150Z\"/><path d=\"M327 210L392 224L350 240L304 232Z\"/><path d=\"M183 326L171 353M245 326L260 353\" fill=\"none\" stroke-linecap=\"round\"/><circle cx=\"280\" cy=\"128\" r=\"8\" fill=\"#ffe95a\" stroke=\"none\"/></g><g fill=\"#6a7b3d\" stroke=\"#31451e\" stroke-width=\"7\" filter=\"url(#shadow)\"><path d=\"M1100 320Q1045 275 1078 236Q1112 198 1150 215Q1172 180 1164 105Q1158 50 1205 38Q1248 28 1250 82Q1251 143 1220 204Q1270 212 1300 248Q1332 286 1310 320Z\"/><path d=\"M1190 82Q1230 57 1275 78Q1298 90 1278 107L1214 108Z\"/><circle cx=\"1234\" cy=\"73\" r=\"7\" fill=\"#ffe95a\" stroke=\"none\"/></g><path d=\"M690 78Q730 35 775 72Q820 35 860 78Q810 70 778 96Q746 70 690 78Z\" fill=\"#7a5b3d\" opacity=\".9\"/><g text-anchor=\"middle\" font-family=\"Arial,sans-serif\" font-weight=\"900\" filter=\"url(#shadow)\"><text x=\"700\" y=\"116\" font-size=\"74\" fill=\"url(#gold)\" stroke=\"#6d3706\" stroke-width=\"8\" paint-order=\"stroke\">PATTAYA</text><text x=\"700\" y=\"190\" font-size=\"76\" fill=\"url(#gold)\" stroke=\"#6d3706\" stroke-width=\"9\" paint-order=\"stroke\">DINOSAUR</text><text x=\"700\" y=\"265\" font-size=\"78\" fill=\"url(#green)\" stroke=\"#18500e\" stroke-width=\"9\" paint-order=\"stroke\">KINGDOM</text><text x=\"700\" y=\"312\" font-size=\"19\" letter-spacing=\"7\" fill=\"#123a29\" stroke=\"none\">EXPLORE • LEARN • PLAY • CREATE MEMORIES</text></g><g transform=\"translate(1120 275) rotate(-5)\"><path d=\"M0 0h235l-18 67H18Z\" fill=\"#5b351f\" stroke=\"#2c1c12\" stroke-width=\"7\"/><text x=\"117\" y=\"28\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" font-weight=\"900\" fill=\"#ffe3a1\">PATTAYA</text><text x=\"117\" y=\"51\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"18\" font-weight=\"900\" fill=\"#ffe3a1\">DINOSAUR KINGDOM</text></g></svg>";
 const REPORT_LOGO_DATA_URL='data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(REPORT_LOGO_SVG);
 const companyBannerImage=document.getElementById('companyBannerImage');if(companyBannerImage){companyBannerImage.src='/company-banner.jpg?v=11';companyBannerImage.onerror=()=>{companyBannerImage.onerror=null;companyBannerImage.src=REPORT_LOGO_DATA_URL};}
 async function buildCategoryReportImage(category){const labels={sale:'Sale Ticket',entry:'Entry Ticket',playing:'Playing Ticket',event:'Event Ticket'};const list=categoryTickets(category);const totals=categoryTotals(category);const W=1080,cardH=190,pad=42,headerH=330,footerH=210;const H=headerH+Math.max(1,list.length)*cardH+footerH;const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#052f3f');bg.addColorStop(.45,'#0b6f79');bg.addColorStop(1,'#063c2e');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);for(let i=0;i<12;i++){ctx.fillStyle=`rgba(255,255,255,${0.025+i%3*.01})`;ctx.beginPath();ctx.arc((i*137)%W,80+(i*83)%(H-100),18+(i%4)*9,0,Math.PI*2);ctx.fill()}const glow=ctx.createRadialGradient(W/2,110,20,W/2,110,470);glow.addColorStop(0,'rgba(255,207,63,.55)');glow.addColorStop(1,'rgba(255,207,63,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,250);
@@ -647,8 +682,7 @@ window.pdkPrepareOwnerLogin=()=>{
   if(typeof staffUnsub!=='undefined'&&staffUnsub){staffUnsub();staffUnsub=null}
   if(typeof staffPermUnsub!=='undefined'&&staffPermUnsub){staffPermUnsub();staffPermUnsub=null}
   renderStaffSession();
-  applyStaffUI();
-};
+  applyStaffUI();};
 window.pdkFinalizeOwnerMode=()=>{
   localStorage.removeItem('pdkStaffSession');
   if(typeof staffProfile!=='undefined')staffProfile=null;
@@ -776,7 +810,7 @@ document.addEventListener('click',e=>{
     if(ownerOnly){e.preventDefault();e.stopPropagation();showToast('Owner only');return}
   }
 },true);
-function renderStaffSession(){const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
+function renderStaffSession(){renderAuthSwitch();const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
 function applyStaffUI(){
  const owner=isOwnerUser(),staff=!!staffProfile&&!owner,guest=!owner&&!staff;
  window.pdkStaffProfileActive=!!(staffProfile&&staffProfile.active);
@@ -847,8 +881,7 @@ if('serviceWorker' in navigator){
   window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;refresh()});
   document.addEventListener('click',async e=>{
     if(e.target?.id!=='pdkInstallBtn')return;
-    if(deferredPrompt){
-      const p=deferredPrompt; deferredPrompt=null;
+    if(deferredPrompt){      const p=deferredPrompt; deferredPrompt=null;
       await p.prompt();
       try{await p.userChoice}catch(_){}
       refresh();
