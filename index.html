@@ -362,6 +362,7 @@ function renderAuthSwitch(){
   else if(u&&!u.isAnonymous&&String(u.email||"").toLowerCase()===ownerEmail()){b.textContent="↪️ Owner Logout";b.title="Owner Logout";}
   else {b.textContent="👑 Owner Login";b.title="Owner Login";}
 }
+window.renderAuthSwitch=renderAuthSwitch;
 window.pdkAuthSwitch=async()=>{
   const u=window.pdkAuth?.currentUser;
   try{
@@ -814,7 +815,7 @@ document.addEventListener('click',e=>{
     if(ownerOnly){e.preventDefault();e.stopPropagation();showToast('Owner only');return}
   }
 },true);
-function renderStaffSession(){renderAuthSwitch();const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
+function renderStaffSession(){if(typeof window.renderAuthSwitch==='function')window.renderAuthSwitch();const bar=el('staffSessionBar');if(!bar)return;if(staffProfile){bar.classList.add('show');el('staffSessionText').textContent=(staffProfile.name||'Staff')+' · '+staffLabels(staffProfile.role)+(staffProfile.active?'':' · Pending')}else bar.classList.remove('show')}
 function applyStaffUI(){
  const owner=isOwnerUser(),staff=!!staffProfile&&!owner,guest=!owner&&!staff;
  window.pdkStaffProfileActive=!!(staffProfile&&staffProfile.active);
