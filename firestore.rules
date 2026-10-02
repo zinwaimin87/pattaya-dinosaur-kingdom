@@ -2,6 +2,7 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Owner-only private data.
     match /owners/{ownerUid}/{document=**} {
       allow read, write: if request.auth != null && request.auth.uid == ownerUid;
     }
@@ -21,10 +22,12 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/staffAccessUsers/$(request.auth.uid)).data;
     }
 
+    // Staff can enter immediately after entering their name + role.
+    // Only an explicit Owner disable blocks the account.
     function activeStaff() {
       return isAnon()
         && exists(/databases/$(database)/documents/staffAccessUsers/$(request.auth.uid))
-        && staffDoc().active == true;
+        && staffDoc().get('disabledByOwner', false) != true;
     }
 
     match /staffAccess/state {
@@ -42,31 +45,35 @@ service cloud.firestore {
     }
 
     match /staffAccessUsers/{staffUid} {
-      // Owner can see and manage every staff account.
+      // Owner can see and manage every staff account; a staff member can read only itself.
       allow read: if isOwner() || (request.auth != null && request.auth.uid == staffUid);
 
-      // A new anonymous staff device creates a pending account.
-      // Owner must activate it before the staff member can access the app.
+      // Staff account is active immediately. No Owner approval is required.
       allow create: if isAnon()
         && request.auth.uid == staffUid
         && request.resource.data.name is string
         && request.resource.data.role in ['sale','entry','customer','event']
-        && request.resource.data.active == false;
+        && request.resource.data.active == true
+        && request.resource.data.get('disabledByOwner', false) == false;
 
-      // Staff can update only their own login metadata. They cannot change role,
-      // permissions, or active/disabled state.
+      // Staff may update only login metadata and cannot change role, permissions,
+      // or Owner disable state. Owner controls active/disabled state.
       allow update: if isOwner() || (
         isAnon()
         && request.auth.uid == staffUid
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'active',
           'lastLoginAt',
           'lastLoginDevice'
         ])
+        && request.resource.data.get('disabledByOwner', false) == false
+        && request.resource.data.active == true
       );
 
       allow delete: if isOwner();
     }
 
+    // Everything else is private/denied to clients.
     match /{document=**} {
       allow read, write: if false;
     }
